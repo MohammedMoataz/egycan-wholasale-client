@@ -3,7 +3,7 @@ import { Brand } from '../types';
 
 export const getBrands = async () => {
   const response = await api.get<Brand[]>('/brands');
-  return response.data;
+  return response.data.data;
 };
 
 export const getBrand = async (id: number) => {

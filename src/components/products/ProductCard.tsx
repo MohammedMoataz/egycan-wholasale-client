@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { ShoppingCart, Plus, Minus } from 'lucide-react';
-import { Product } from '../../types';
+import React, { useState } from "react";
+import { ShoppingCart, Plus, Minus } from "lucide-react";
+import { Product } from "../../types";
 
 interface ProductCardProps {
   product: Product;
@@ -8,28 +8,32 @@ interface ProductCardProps {
   onAddToCart: (quantity: number) => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, onClick, onAddToCart }) => {
+const ProductCard: React.FC<ProductCardProps> = ({
+  product,
+  onClick,
+  onAddToCart,
+}) => {
   const [quantity, setQuantity] = useState(1);
   const [showQuantity, setShowQuantity] = useState(false);
-  
+
   const handleQuantityChange = (value: number) => {
-    const newQuantity = Math.max(1, Math.min(product.inStock, quantity + value));
+    const newQuantity = quantity + value;
     setQuantity(newQuantity);
   };
-  
+
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (showQuantity) {
       onAddToCart(quantity);
       setShowQuantity(false);
-      setQuantity(1);
+      setQuantity(quantity + 1);
     } else {
       setShowQuantity(true);
     }
   };
-  
+
   return (
-    <div 
+    <div
       className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition cursor-pointer"
       onClick={onClick}
     >
@@ -46,26 +50,29 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick, onAddToCart
           </div>
         )}
       </div>
-      
+
       <div className="p-4">
         <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
         <p className="text-gray-600 text-sm mb-2">
           {product.brand?.name}
           {product.category && ` • ${product.category.name}`}
         </p>
-        
+
         <div className="flex justify-between items-center mb-2">
-          <span className="font-bold text-indigo-600">${product.price.toFixed(2)}</span>
-          <span className={`text-sm ${product.inStock > 0 ? 'text-green-500' : 'text-red-500'}`}>
-            {product.inStock > 0 ? `${product.inStock} in stock` : 'Out of Stock'}
+          <span className="font-bold text-indigo-600">
+            ${product.price.toFixed(2)}
+          </span>
+          <span
+            className={`text-sm ${
+              product.inStock ? "text-green-500" : "text-red-500"
+            }`}
+          >
+            {product.inStock ? `in stock` : "Out of Stock"}
           </span>
         </div>
-        
-        {product.inStock > 0 && (
-          <div 
-            onClick={(e) => e.stopPropagation()}
-            className="mt-3"
-          >
+
+        {product.inStock && (
+          <div onClick={(e) => e.stopPropagation()} className="mt-3">
             {showQuantity ? (
               <div className="flex items-center justify-between">
                 <div className="flex items-center border rounded-l-lg">

@@ -50,7 +50,7 @@ export interface Product {
   name: string;
   description: string;
   price: number;
-  inStock: number;
+  inStock: boolean;
   categoryId: number;
   subcategoryId: number;
   brandId: number;

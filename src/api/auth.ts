@@ -15,7 +15,7 @@ export const login = async (email: string, password: string) => {
     email,
     password,
   });
-  return response.data;
+  return response.data.data;
 };
 
 export const adminLogin = async (email: string, password: string) => {
@@ -23,7 +23,7 @@ export const adminLogin = async (email: string, password: string) => {
     email,
     password,
   });
-  return response.data;
+  return response.data.data;
 };
 
 export const refreshToken = async (refreshToken: string) => {

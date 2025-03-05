@@ -3,7 +3,7 @@ import { Category, Subcategory } from '../types';
 
 export const getCategories = async () => {
   const response = await api.get<Category[]>('/categories');
-  return response.data;
+  return response.data.data;
 };
 
 export const getCategory = async (id: number) => {
@@ -26,12 +26,12 @@ export const deleteCategory = async (id: number) => {
 };
 
 export const getSubcategories = async (categoryId?: number) => {
-  const url = categoryId 
-    ? `/subcategories?categoryId=${categoryId}` 
+  const url = categoryId
+    ? `/subcategories?categoryId=${categoryId}`
     : '/subcategories';
-  
+
   const response = await api.get<Subcategory[]>(url);
-  return response.data;
+  return response.data.data;
 };
 
 export const getSubcategory = async (id: number) => {
@@ -40,17 +40,17 @@ export const getSubcategory = async (id: number) => {
 };
 
 export const createSubcategory = async (name: string, categoryId: number) => {
-  const response = await api.post<Subcategory>('/subcategories', { 
-    name, 
-    categoryId 
+  const response = await api.post<Subcategory>('/subcategories', {
+    name,
+    categoryId
   });
   return response.data;
 };
 
 export const updateSubcategory = async (id: number, name: string, categoryId: number) => {
-  const response = await api.put<Subcategory>(`/subcategories/${id}`, { 
-    name, 
-    categoryId 
+  const response = await api.put<Subcategory>(`/subcategories/${id}`, {
+    name,
+    categoryId
   });
   return response.data;
 };

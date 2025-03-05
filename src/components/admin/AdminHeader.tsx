@@ -14,11 +14,6 @@ const AdminHeader: React.FC = () => {
       <div className="flex-1"></div>
       
       <div className="flex items-center space-x-4">
-        <button className="relative p-2 rounded-full hover:bg-gray-100">
-          <Bell size={20} />
-          <span className="absolute top-1 right-1 bg-red-500 rounded-full w-2 h-2"></span>
-        </button>
-        
         <div className="flex items-center">
           <div className="mr-2 text-right hidden sm:block">
             <p className="text-sm font-medium">{user?.name}</p>

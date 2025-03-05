@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { X, ShoppingCart, Plus, Minus } from 'lucide-react';
-import { Product } from '../../types';
+import React, { useState } from "react";
+import { X, ShoppingCart, Plus, Minus } from "lucide-react";
+import { Product } from "../../types";
 
 interface ProductModalProps {
   product: Product;
@@ -9,29 +9,31 @@ interface ProductModalProps {
   onAddToCart: (quantity: number) => void;
 }
 
-const ProductModal: React.FC<ProductModalProps> = ({ 
-  product, 
-  isOpen, 
-  onClose, 
-  onAddToCart 
+const ProductModal: React.FC<ProductModalProps> = ({
+  product,
+  isOpen,
+  onClose,
+  onAddToCart,
 }) => {
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(
-    product.images && product.images.length > 0 ? product.images[0].imageUrl : null
+    product.images && product.images.length > 0
+      ? product.images[0].imageUrl
+      : null
   );
-  
+
   if (!isOpen) return null;
-  
+
   const handleQuantityChange = (value: number) => {
-    const newQuantity = Math.max(1, Math.min(product.inStock, quantity + value));
+    const newQuantity = quantity + value;
     setQuantity(newQuantity);
   };
-  
+
   const handleAddToCart = () => {
     onAddToCart(quantity);
     onClose();
   };
-  
+
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
@@ -43,7 +45,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
             <X size={24} />
           </button>
         </div>
-        
+
         <div className="px-6 pb-6 grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Product Images */}
           <div>
@@ -58,7 +60,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
                 <div className="text-gray-400">No image available</div>
               )}
             </div>
-            
+
             {/* Thumbnail Images */}
             {product.images && product.images.length > 1 && (
               <div className="flex space-x-2 overflow-x-auto">
@@ -66,7 +68,9 @@ const ProductModal: React.FC<ProductModalProps> = ({
                   <div
                     key={image.id}
                     className={`h-16 w-16 rounded-md cursor-pointer border-2 ${
-                      selectedImage === image.imageUrl ? 'border-indigo-600' : 'border-transparent'
+                      selectedImage === image.imageUrl
+                        ? "border-indigo-600"
+                        : "border-transparent"
                     }`}
                     onClick={() => setSelectedImage(image.imageUrl)}
                   >
@@ -80,40 +84,47 @@ const ProductModal: React.FC<ProductModalProps> = ({
               </div>
             )}
           </div>
-          
+
           {/* Product Details */}
           <div>
             <h2 className="text-2xl font-bold mb-2">{product.name}</h2>
-            
+
             <div className="flex items-center mb-4">
               <span className="text-xl font-bold text-indigo-600 mr-4">
                 ${product.price.toFixed(2)}
               </span>
-              <span className={`px-2 py-1 rounded-full text-xs ${
-                product.inStock > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-              }`}>
-                {product.inStock > 0 ? `In Stock (${product.inStock})` : 'Out of Stock'}
+              <span
+                className={`px-2 py-1 rounded-full text-xs ${
+                  product.inStock
+                    ? "bg-green-100 text-green-800"
+                    : "bg-red-100 text-red-800"
+                }`}
+              >
+                {product.inStock ? `In Stock` : "Out of Stock"}
               </span>
             </div>
-            
+
             <div className="mb-4">
               <p className="text-sm text-gray-600 mb-1">
-                <span className="font-semibold">Brand:</span> {product.brand?.name}
+                <span className="font-semibold">Brand:</span>{" "}
+                {product.brand?.name}
               </p>
               <p className="text-sm text-gray-600 mb-1">
-                <span className="font-semibold">Category:</span> {product.category?.name}
+                <span className="font-semibold">Category:</span>{" "}
+                {product.category?.name}
               </p>
               <p className="text-sm text-gray-600">
-                <span className="font-semibold">Subcategory:</span> {product.subcategory?.name}
+                <span className="font-semibold">Subcategory:</span>{" "}
+                {product.subcategory?.name}
               </p>
             </div>
-            
+
             <div className="mb-6">
               <h3 className="font-semibold mb-2">Description</h3>
               <p className="text-gray-700">{product.description}</p>
             </div>
-            
-            {product.inStock > 0 && (
+
+            {product.inStock && (
               <div>
                 <div className="flex items-center mb-4">
                   <span className="mr-4">Quantity:</span>
@@ -129,13 +140,13 @@ const ProductModal: React.FC<ProductModalProps> = ({
                     <button
                       onClick={() => handleQuantityChange(1)}
                       className="px-3 py-1 text-gray-600 hover:bg-gray-100"
-                      disabled={quantity >= product.inStock}
+                      disabled={product.inStock}
                     >
                       <Plus size={16} />
                     </button>
                   </div>
                 </div>
-                
+
                 <button
                   onClick={handleAddToCart}
                   className="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 flex items-center justify-center"

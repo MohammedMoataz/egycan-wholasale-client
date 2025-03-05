@@ -24,7 +24,8 @@ const AdminLoginPage: React.FC = () => {
       navigate('/admin');
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || 'Admin login failed. Please check your credentials.');
+      console.log(error)
+      // toast.error(error.response?.data?.message || 'Admin login failed. Please check your credentials.');
     },
   });
   

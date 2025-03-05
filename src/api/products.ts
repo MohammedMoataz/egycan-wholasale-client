@@ -3,7 +3,7 @@ import { Product, ProductFilters } from '../types';
 
 export const getProducts = async (filters?: ProductFilters) => {
   const response = await api.get<Product[]>('/products', { params: filters });
-  return response.data;
+  return response.data.data;
 };
 
 export const getProduct = async (id: number) => {

@@ -3,7 +3,7 @@ import { Invoice } from '../types';
 
 export const getInvoices = async () => {
   const response = await api.get<Invoice[]>('/invoices');
-  return response.data;
+  return response.data.data;
 };
 
 export const getInvoice = async (id: number) => {
