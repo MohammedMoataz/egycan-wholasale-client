@@ -4,7 +4,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { register as registerUser } from '../api/auth';
-import { useAuthStore } from '../store/authStore';
 
 interface RegisterFormData {
   name: string;
@@ -16,16 +15,14 @@ interface RegisterFormData {
 const RegisterPage: React.FC = () => {
   const { register, handleSubmit, watch, formState: { errors } } = useForm<RegisterFormData>();
   const navigate = useNavigate();
-  const { setAuth } = useAuthStore();
   
   const password = watch('password');
   
   const registerMutation = useMutation({
     mutationFn: (data: RegisterFormData) => registerUser(data.name, data.email, data.password),
-    onSuccess: (data) => {
-      setAuth(data.user, data.accessToken, data.refreshToken);
-      toast.success('Registration successful!');
-      navigate('/');
+    onSuccess: () => {
+      toast.success('Registration request submitted! Please wait for admin approval.');
+      navigate('/login');
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.message || 'Registration failed. Please try again.');
@@ -127,6 +124,13 @@ const RegisterPage: React.FC = () => {
             {errors.confirmPassword && (
               <p className="mt-1 text-red-500 text-sm">{errors.confirmPassword.message}</p>
             )}
+          </div>
+          
+          <div className="mb-6 p-4 bg-yellow-50 rounded-lg">
+            <p className="text-yellow-800 text-sm">
+              Note: Your registration request will be reviewed by an administrator.
+              You'll be notified once your account is approved.
+            </p>
           </div>
           
           <button

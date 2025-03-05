@@ -51,6 +51,12 @@ const Navbar: React.FC = () => {
                   <span>{user?.name}</span>
                 </button>
                 <div className="absolute right-0 w-48 mt-2 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block">
+                  <Link
+                    to="/account"
+                    className="block px-4 py-2 text-gray-700 hover:bg-indigo-50"
+                  >
+                    Account Settings
+                  </Link>
                   <button
                     onClick={handleLogout}
                     className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-indigo-50"
@@ -131,9 +137,13 @@ const Navbar: React.FC = () => {
               
               {isAuthenticated ? (
                 <>
-                  <div className="text-gray-700 py-2">
-                    <span>Hello, {user?.name}</span>
-                  </div>
+                  <Link
+                    to="/account"
+                    className="text-gray-700 hover:text-indigo-600 py-2"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Account Settings
+                  </Link>
                   <button
                     onClick={() => {
                       handleLogout();

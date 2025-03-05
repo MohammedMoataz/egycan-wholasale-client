@@ -15,8 +15,10 @@ import BrandPage from './pages/BrandPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import CartPage from './pages/CartPage';
+import AccountPage from './pages/AccountPage';
 import AdminLoginPage from './pages/admin/AdminLoginPage';
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
+import AdminUsersPage from './pages/admin/AdminUsersPage';
 import AdminProductsPage from './pages/admin/AdminProductsPage';
 import AdminCategoriesPage from './pages/admin/AdminCategoriesPage';
 import AdminBrandsPage from './pages/admin/AdminBrandsPage';
@@ -46,6 +48,7 @@ function App() {
             {/* Protected Customer Routes */}
             <Route element={<ProtectedRoute />}>
               <Route path="cart" element={<CartPage />} />
+              <Route path="account" element={<AccountPage />} />
             </Route>
           </Route>
           
@@ -54,10 +57,12 @@ function App() {
           <Route path="/admin" element={<AdminLayout />}>
             <Route element={<AdminRoute />}>
               <Route index element={<AdminDashboardPage />} />
+              <Route path="users" element={<AdminUsersPage />} />
               <Route path="products" element={<AdminProductsPage />} />
               <Route path="categories" element={<AdminCategoriesPage />} />
               <Route path="brands" element={<AdminBrandsPage />} />
               <Route path="invoices" element={<AdminInvoicesPage />} />
+              <Route path="account" element={<AccountPage />} />
             </Route>
           </Route>
         </Routes>

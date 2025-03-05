@@ -4,6 +4,7 @@ export interface User {
   name: string;
   email: string;
   role: 'customer' | 'admin';
+  status: 'pending' | 'active' | 'rejected';
   createdAt: string;
   updatedAt: string;
 }
@@ -50,7 +51,7 @@ export interface Product {
   name: string;
   description: string;
   price: number;
-  inStock: boolean;
+  inStock: number;
   categoryId: number;
   subcategoryId: number;
   brandId: number;

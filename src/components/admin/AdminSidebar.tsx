@@ -5,7 +5,9 @@ import {
   ShoppingBag, 
   Tag, 
   Bookmark, 
-  FileText, 
+  FileText,
+  Users,
+  User,
   LogOut 
 } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
@@ -23,6 +25,11 @@ const AdminSidebar: React.FC = () => {
       path: '/admin',
       name: 'Dashboard',
       icon: <LayoutDashboard size={20} />,
+    },
+    {
+      path: '/admin/users',
+      name: 'Users',
+      icon: <Users size={20} />,
     },
     {
       path: '/admin/products',
@@ -43,6 +50,11 @@ const AdminSidebar: React.FC = () => {
       path: '/admin/invoices',
       name: 'Invoices',
       icon: <FileText size={20} />,
+    },
+    {
+      path: '/admin/account',
+      name: 'Account',
+      icon: <User size={20} />,
     },
   ];
   
