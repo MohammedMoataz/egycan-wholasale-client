@@ -19,13 +19,13 @@ const heroCarouselItems = [
   {
     title: "Summer Sale Extravaganza",
     description: "Massive discounts on top brands. Limited time offer!",
-    image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+    image: "https://images.unsplash.com/photo-1553531889-56cc480ac5cb?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     backgroundColor: "bg-emerald-700"
   },
   {
     title: "New Season, New Styles",
     description: "Explore our latest collection and refresh your wardrobe!",
-    image: "https://images.unsplash.com/photo-1503342217505-b0a987ec57a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+    image: "https://images.unsplash.com/photo-1713646778050-2213b4140e6b?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     backgroundColor: "bg-cyan-700"
   }
 ];
@@ -89,22 +89,12 @@ const HomePage: React.FC = () => {
     );
   }
   
-  // Determine carousel items - use featured products if available, otherwise fallback
-  const carouselItems = featuredProducts?.length 
-    ? featuredProducts.slice(0, 3).map(product => ({
-        title: product.name,
-        description: product.description || "Discover our latest product",
-        image: product.images?.[0]?.imageUrl || heroCarouselItems[0].image,
-        backgroundColor: "bg-emerald-700"
-      }))
-    : heroCarouselItems;
-
   return (
     <div>
       {/* Hero Carousel Section */}
       <section className="mb-12">
         <Slider {...carouselSettings}>
-          {carouselItems.map((item, index) => (
+          {heroCarouselItems.map((item, index) => (
             <div key={index} className="relative h-[600px] w-full">
               {/* Background Image with Overlay */}
               <div className="absolute inset-0">

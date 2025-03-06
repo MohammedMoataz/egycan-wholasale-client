@@ -5,6 +5,16 @@ export interface User {
   email: string;
   role: 'customer' | 'admin';
   status: 'pending' | 'active' | 'rejected';
+  phoneNumber: string;
+  businessName?: string;
+  businessEmail?: string;
+  businessPhone?: string;
+  registrationNumber?: string;
+  taxId?: string;
+  businessAddress?: string;
+  website?: string;
+  businessType?: string;
+  documentUrl?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -13,6 +23,27 @@ export interface AuthResponse {
   user: User;
   accessToken: string;
   refreshToken: string;
+}
+
+// Registration Types
+export interface PersonalInfo {
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  password: string;
+  confirmPassword: string;
+}
+
+export interface BusinessInfo {
+  businessName: string;
+  businessEmail: string;
+  businessPhone: string;
+  registrationNumber: string;
+  taxId: string;
+  businessAddress: string;
+  website: string;
+  businessType: string;
+  document?: File;
 }
 
 // Product Types

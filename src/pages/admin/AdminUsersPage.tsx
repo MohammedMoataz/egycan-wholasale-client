@@ -1,101 +1,208 @@
-import React, { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'react-hot-toast';
-import { Search, CheckCircle, XCircle, Trash2, Mail } from 'lucide-react';
-import { getAllUsers, approveUser, rejectUser, deleteUser } from '../../api/users';
-import { User } from '../../types';
-
+import React, { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-hot-toast";
+import { Search, CheckCircle, XCircle, Trash2, Mail, Eye } from "lucide-react";
+import {
+  getAllUsers,
+  approveUser,
+  rejectUser,
+  deleteUser,
+} from "../../api/users";
+import { User } from "../../types";
+import UserDetailsModal from "./UserModal";
+import { ConfirmationModal } from "./ConfirmationModal";
 const AdminUsersPage: React.FC = () => {
   const queryClient = useQueryClient();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  
+  const [isUserDetailsModalOpen, setIsUserDetailsModalOpen] = useState(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [userToApprove, setUserToApprove] = useState(null);
+  const [userToReject, setUserToReject] = useState(null);
+
   // Fetch users
   const { data: users, isLoading } = useQuery({
-    queryKey: ['users'],
+    queryKey: ["users"],
     queryFn: getAllUsers,
   });
-  
+
+  const dummyUsers: User[] = [
+    {
+      id: 1,
+      name: "John Doe",
+      email: "john.doe@example.com",
+      role: "admin",
+      status: "active",
+      createdAt: new Date().toISOString(),
+      phoneNumber: "phoneNumber",
+      updatedAt: "updatedAt",
+      businessAddress: "businessAddress",
+      businessName: "businessName",
+      businessType: "businessType",
+      businessEmail: "businessEmail",
+      businessPhone: "businessPhone",
+      documentUrl: "documentUrl",
+      registrationNumber: "registrationNumber",
+      taxId: "taxId",
+      website: "website",
+    },
+    {
+      id: 2,
+      name: "Jane Smith",
+      email: "jane.smith@example.com",
+      role: "customer",
+      status: "pending",
+      createdAt: new Date().toISOString(),
+      phoneNumber: "phoneNumber",
+      updatedAt: "updatedAt",
+      businessAddress: "businessAddress",
+      businessName: "businessName",
+      businessType: "businessType",
+      businessEmail: "businessEmail",
+      businessPhone: "businessPhone",
+      documentUrl: "documentUrl",
+      registrationNumber: "registrationNumber",
+      taxId: "taxId",
+      website: "website",
+    },
+    {
+      id: 3,
+      name: "Alice Johnson",
+      email: "alice.johnson@example.com",
+      role: "customer",
+      status: "rejected",
+      createdAt: new Date().toISOString(),
+      phoneNumber: "phoneNumber",
+      updatedAt: "updatedAt",
+      businessAddress: "businessAddress",
+      businessName: "businessName",
+      businessType: "businessType",
+      businessEmail: "businessEmail",
+      businessPhone: "businessPhone",
+      documentUrl: "documentUrl",
+      registrationNumber: "registrationNumber",
+      taxId: "taxId",
+      website: "website",
+    },
+    {
+      id: 4,
+      name: "Bob Brown",
+      email: "bob.brown@example.com",
+      role: "admin",
+      status: "active",
+      createdAt: new Date().toISOString(),
+      phoneNumber: "phoneNumber",
+      updatedAt: "updatedAt",
+      businessAddress: "businessAddress",
+      businessName: "businessName",
+      businessType: "businessType",
+      businessEmail: "businessEmail",
+      businessPhone: "businessPhone",
+      documentUrl: "documentUrl",
+      registrationNumber: "registrationNumber",
+      taxId: "taxId",
+      website: "website",
+    },
+  ];
+
   // Approve user mutation
   const approveUserMutation = useMutation({
     mutationFn: approveUser,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['users'] });
-      toast.success('User approved successfully');
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success("User approved successfully");
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || 'Failed to approve user');
+      toast.error(error.response?.data?.message || "Failed to approve user");
     },
   });
-  
+
   // Reject user mutation
   const rejectUserMutation = useMutation({
     mutationFn: rejectUser,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['users'] });
-      toast.success('User rejected successfully');
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success("User rejected successfully");
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || 'Failed to reject user');
+      toast.error(error.response?.data?.message || "Failed to reject user");
     },
   });
-  
+
   // Delete user mutation
   const deleteUserMutation = useMutation({
     mutationFn: deleteUser,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['users'] });
-      toast.success('User deleted successfully');
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success("User deleted successfully");
       setIsDeleteModalOpen(false);
       setSelectedUser(null);
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || 'Failed to delete user');
+      toast.error(error.response?.data?.message || "Failed to delete user");
     },
   });
-  
-  const handleApprove = (user: User) => {
-    if (window.confirm(`Are you sure you want to approve ${user.name}?`)) {
-      approveUserMutation.mutate(user.id);
-    }
+
+  const handleApprove = (user) => {
+    setUserToApprove(user);
+    setIsConfirmModalOpen(true);
   };
-  
-  const handleReject = (user: User) => {
-    if (window.confirm(`Are you sure you want to reject ${user.name}?`)) {
-      rejectUserMutation.mutate(user.id);
+
+  const confirmApprove = () => {
+    if (userToApprove) {
+      approveUserMutation.mutate(userToApprove.id);
     }
+    setIsConfirmModalOpen(false);
   };
-  
+
+  const handleReject = (user) => {
+    setUserToReject(user);
+    setIsConfirmModalOpen(true);
+  };
+
+  const confirmReject = () => {
+    if (userToReject) {
+      rejectUserMutation.mutate(userToReject.id);
+    }
+    setIsConfirmModalOpen(false);
+  };
+
   const openDeleteModal = (user: User) => {
     setSelectedUser(user);
     setIsDeleteModalOpen(true);
   };
-  
-  const filteredUsers = users?.filter(user => 
-    user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchTerm.toLowerCase())
+
+  const openUserDetailsModal = (user: User) => {
+    setSelectedUser(user);
+    setIsUserDetailsModalOpen(true);
+  };
+
+  const filteredUsers = dummyUsers?.filter(
+    (user) =>
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  
-  const getStatusBadgeClass = (status: User['status']) => {
+
+  const getStatusBadgeClass = (status: User["status"]) => {
     switch (status) {
-      case 'pending':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'active':
-        return 'bg-green-100 text-green-800';
-      case 'rejected':
-        return 'bg-red-100 text-red-800';
+      case "pending":
+        return "bg-yellow-100 text-yellow-800";
+      case "active":
+        return "bg-green-100 text-green-800";
+      case "rejected":
+        return "bg-red-100 text-red-800";
       default:
-        return 'bg-gray-100 text-gray-800';
+        return "bg-gray-100 text-gray-800";
     }
   };
-  
+
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Users Management</h1>
       </div>
-      
+
       {/* Search */}
       <div className="mb-6">
         <div className="relative">
@@ -109,7 +216,7 @@ const AdminUsersPage: React.FC = () => {
           <Search className="absolute left-3 top-2.5 text-gray-400" size={18} />
         </div>
       </div>
-      
+
       {/* Users Table */}
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
@@ -147,22 +254,32 @@ const AdminUsersPage: React.FC = () => {
                           <Mail size={20} />
                         </div>
                         <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900">{user.name}</div>
-                          <div className="text-sm text-gray-500">{user.email}</div>
+                          <div className="text-sm font-medium text-gray-900">
+                            {user.name}
+                          </div>
+                          <div className="text-sm text-gray-500">
+                            {user.email}
+                          </div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 py-1 text-xs rounded-full ${
-                        user.role === 'admin' 
-                          ? 'bg-purple-100 text-purple-800' 
-                          : 'bg-blue-100 text-blue-800'
-                      }`}>
+                      <span
+                        className={`px-2 py-1 text-xs rounded-full ${
+                          user.role === "admin"
+                            ? "bg-purple-100 text-purple-800"
+                            : "bg-blue-100 text-blue-800"
+                        }`}
+                      >
                         {user.role}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 py-1 text-xs rounded-full ${getStatusBadgeClass(user.status)}`}>
+                      <span
+                        className={`px-2 py-1 text-xs rounded-full ${getStatusBadgeClass(
+                          user.status
+                        )}`}
+                      >
                         {user.status}
                       </span>
                     </td>
@@ -170,7 +287,7 @@ const AdminUsersPage: React.FC = () => {
                       {new Date(user.createdAt).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      {user.status === 'pending' && (
+                      {user.status === "pending" && (
                         <>
                           <button
                             onClick={() => handleApprove(user)}
@@ -179,6 +296,17 @@ const AdminUsersPage: React.FC = () => {
                           >
                             <CheckCircle size={18} />
                           </button>
+                          <ConfirmationModal
+                            isOpen={isConfirmModalOpen}
+                            onClose={() => setIsConfirmModalOpen(false)}
+                            onConfirm={confirmApprove}
+                            title="Approve User"
+                            message={`Are you sure you want to approve this user? This action cannot be undone.`}
+                            confirmText="Approve"
+                            cancelText="Cancel"
+                            user={userToApprove}
+                            isLoading={approveUserMutation.isLoading}
+                          />
                           <button
                             onClick={() => handleReject(user)}
                             className="text-red-600 hover:text-red-900 mr-3"
@@ -186,8 +314,26 @@ const AdminUsersPage: React.FC = () => {
                           >
                             <XCircle size={18} />
                           </button>
+                          <ConfirmationModal
+                            isOpen={isConfirmModalOpen}
+                            onClose={() => setIsConfirmModalOpen(false)}
+                            onConfirm={confirmReject}
+                            title="Approve User"
+                            message={`Are you sure you want to approve this user? This action cannot be undone.`}
+                            confirmText="Approve"
+                            cancelText="Cancel"
+                            user={userToApprove}
+                            isLoading={approveUserMutation.isLoading}
+                          />
                         </>
                       )}
+                      <button
+                        onClick={() => openUserDetailsModal(user)}
+                        className="text-blue-600 hover:text-blue-900 mr-3"
+                        title="View Details"
+                      >
+                        <Eye size={18} />
+                      </button>
                       <button
                         onClick={() => openDeleteModal(user)}
                         className="text-red-600 hover:text-red-900"
@@ -198,10 +344,13 @@ const AdminUsersPage: React.FC = () => {
                     </td>
                   </tr>
                 ))}
-                
+
                 {filteredUsers?.length === 0 && (
                   <tr>
-                    <td colSpan={5} className="px-6 py-4 text-center text-gray-500">
+                    <td
+                      colSpan={5}
+                      className="px-6 py-4 text-center text-gray-500"
+                    >
                       No users found
                     </td>
                   </tr>
@@ -211,16 +360,18 @@ const AdminUsersPage: React.FC = () => {
           </div>
         </div>
       )}
-      
+
       {/* Delete Confirmation Modal */}
       {isDeleteModalOpen && selectedUser && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
             <h2 className="text-xl font-semibold mb-4">Confirm Delete</h2>
             <p className="mb-6">
-              Are you sure you want to delete <strong>{selectedUser.name}</strong>? This action cannot be undone.
+              Are you sure you want to delete{" "}
+              <strong>{selectedUser.name}</strong>? This action cannot be
+              undone.
             </p>
-            
+
             <div className="flex justify-end space-x-3">
               <button
                 onClick={() => setIsDeleteModalOpen(false)}
@@ -233,11 +384,19 @@ const AdminUsersPage: React.FC = () => {
                 disabled={deleteUserMutation.isPending}
                 className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-70"
               >
-                {deleteUserMutation.isPending ? 'Deleting...' : 'Delete'}
+                {deleteUserMutation.isPending ? "Deleting..." : "Delete"}
               </button>
             </div>
           </div>
         </div>
+      )}
+
+      {/* User Details Modal */}
+      {isUserDetailsModalOpen && selectedUser && (
+        <UserDetailsModal
+          selectedUser={selectedUser}
+          setIsUserDetailsModalOpen={setIsUserDetailsModalOpen}
+        />
       )}
     </div>
   );
