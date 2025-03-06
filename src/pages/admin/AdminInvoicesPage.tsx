@@ -260,7 +260,7 @@ const AdminInvoicesPage: React.FC = () => {
                         ? 'bg-blue-100 text-blue-800'
                         : 'bg-red-100 text-red-800'
                     }`}>
-                      {currentInvoice.status.charAt(0).toUpperCase() + currentInvoice.status.slice(1)}
+                      Invoice {/* {currentInvoice.status.charAt(0).toUpperCase() + currentInvoice.status.slice(1)} */}
                     </span>
                   </p>
                   <p className="text-gray-600">

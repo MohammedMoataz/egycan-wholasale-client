@@ -151,7 +151,7 @@ const AccountPage: React.FC = () => {
                 ? 'bg-purple-100 text-purple-800' 
                 : 'bg-blue-100 text-blue-800'
             }`}>
-              {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+              Admin{/* {user.role.charAt(0).toUpperCase() + user.role.slice(1)} */}
             </span>
           </div>
         </div>
