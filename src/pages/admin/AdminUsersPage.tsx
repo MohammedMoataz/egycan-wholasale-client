@@ -18,13 +18,13 @@ const AdminUsersPage: React.FC = () => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isUserDetailsModalOpen, setIsUserDetailsModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  const [userToApprove, setUserToApprove] = useState(null);
-  const [userToReject, setUserToReject] = useState(null);
+  const [userToApprove, setUserToApprove] = useState<{ name: string; email: string } | null>(null);
+  const [userToReject, setUserToReject] = useState<{ name: string; email: string } | null>(null);
 
   // Fetch users
   const { data: users, isLoading } = useQuery({
     queryKey: ["users"],
-    queryFn: getAllUsers,
+    queryFn: () => getAllUsers(1, 10),
   });
 
   const dummyUsers: User[] = [

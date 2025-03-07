@@ -16,7 +16,7 @@ const AdminInvoicesPage: React.FC = () => {
   // Fetch invoices
   const { data: invoices, isLoading } = useQuery({
     queryKey: ['invoices'],
-    queryFn: getInvoices,
+    queryFn: () => getInvoices(1, 10),
   });
   
   // Update invoice status mutation

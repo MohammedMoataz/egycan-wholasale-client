@@ -28,13 +28,16 @@ const AdminProductsPage: React.FC = () => {
   // Fetch products
   const { data: products, isLoading } = useQuery({
     queryKey: ['products'],
-    queryFn: getProducts,
+    queryFn: () => getProducts({
+      page: 1,
+      limit: 10,
+    }),
   });
   
   // Fetch categories
   const { data: categories } = useQuery({
     queryKey: ['categories'],
-    queryFn: getCategories,
+    queryFn: () => getCategories(1, 10),
   });
   
   // Fetch subcategories based on selected category
@@ -47,7 +50,7 @@ const AdminProductsPage: React.FC = () => {
   // Fetch brands
   const { data: brands } = useQuery({
     queryKey: ['brands'],
-    queryFn: getBrands,
+    queryFn: () => getBrands(1, 10),
   });
   
   // Create product mutation

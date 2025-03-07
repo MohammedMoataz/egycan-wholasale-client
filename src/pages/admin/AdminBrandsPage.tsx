@@ -16,7 +16,7 @@ const AdminBrandsPage: React.FC = () => {
   // Fetch brands
   const { data: brands, isLoading } = useQuery({
     queryKey: ['brands'],
-    queryFn: getBrands,
+    queryFn: () => getBrands(1, 10),
   });
   
   // Create brand mutation

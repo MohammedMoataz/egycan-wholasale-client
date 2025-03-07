@@ -1,7 +1,19 @@
 import React from "react";
 import { AlertTriangle, CheckCircle } from "lucide-react";
 
-const ConfirmationModal = ({
+interface ConfirmationModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  title?: string;
+  message: string;
+  confirmText?: string;
+  cancelText?: string;
+  user?: { name: string; email: string } | null;
+  isLoading?: boolean;
+}
+
+export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   isOpen,
   onClose,
   onConfirm,
@@ -89,38 +101,3 @@ const ConfirmationModal = ({
     </div>
   );
 };
-
-// Usage example component
-const UserApprovalButton = ({ user, approveUserMutation }) => {
-  const [isConfirmOpen, setIsConfirmOpen] = React.useState(false);
-
-  const handleApprove = () => {
-    approveUserMutation.mutate(user.id);
-    setIsConfirmOpen(false);
-  };
-
-  return (
-    <>
-      <button
-        onClick={() => setIsConfirmOpen(true)}
-        className="px-3 py-1 bg-green-100 text-green-800 rounded-md hover:bg-green-200"
-      >
-        Approve
-      </button>
-
-      <ConfirmationModal
-        isOpen={isConfirmOpen}
-        onClose={() => setIsConfirmOpen(false)}
-        onConfirm={handleApprove}
-        title="Approve User"
-        message={`Are you sure you want to approve this user? This action cannot be undone.`}
-        confirmText="Approve"
-        cancelText="Cancel"
-        user={user}
-        isLoading={approveUserMutation.isLoading}
-      />
-    </>
-  );
-};
-
-export default UserApprovalButton;

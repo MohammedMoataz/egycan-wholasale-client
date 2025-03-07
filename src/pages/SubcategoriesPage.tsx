@@ -1,57 +1,67 @@
-import React from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { getCategory } from '../api/categories';
-import { getSubcategories } from '../api/categories';
-import { getProducts } from '../api/products';
-import { ArrowLeft } from 'lucide-react';
-import ProductCard from '../components/products/ProductCard';
-import ProductModal from '../components/products/ProductModal';
-import { useCartStore } from '../store/cartStore';
-import { toast } from 'react-hot-toast';
-import { Product } from '../types';
+import React from "react";
+import { useParams, Link, useSearchParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getCategory } from "../api/categories";
+import { getSubcategories } from "../api/categories";
+import { getProducts } from "../api/products";
+import { ArrowLeft } from "lucide-react";
+import ProductCard from "../components/products/ProductCard";
+import ProductModal from "../components/products/ProductModal";
+import { useCartStore } from "../store/cartStore";
+import { toast } from "react-hot-toast";
+import { Product } from "../types";
 
 const SubcategoriesPage: React.FC = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { categoryId } = useParams<{ categoryId: string }>();
-  const [selectedProduct, setSelectedProduct] = React.useState<Product | null>(null);
+  const [selectedProduct, setSelectedProduct] = React.useState<Product | null>(
+    null
+  );
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const { addItem } = useCartStore();
-  
-  const categoryIdNum = parseInt(categoryId || '0', 10);
-  
+
+  const categoryIdNum = parseInt(categoryId || "0", 10);
+
   const { data: category, isLoading: categoryLoading } = useQuery({
-    queryKey: ['category', categoryIdNum],
+    queryKey: ["category", categoryIdNum],
     queryFn: () => getCategory(categoryIdNum),
     enabled: !!categoryIdNum,
   });
-  
+
   const { data: subcategories, isLoading: subcategoriesLoading } = useQuery({
-    queryKey: ['subcategories', categoryIdNum],
+    queryKey: ["subcategories", categoryIdNum],
     queryFn: () => getSubcategories(categoryIdNum),
     enabled: !!categoryIdNum,
   });
-  
+
   const { data: products, isLoading: productsLoading } = useQuery({
-    queryKey: ['products', { categoryId: categoryIdNum }],
-    queryFn: () => getProducts({ categoryId: categoryIdNum }),
+    queryKey: ["products", { categoryId: categoryIdNum }],
+    queryFn: () =>
+      getProducts({
+        page: searchParams.get("page") ? Number(searchParams.get("page")) : 1,
+        limit: searchParams.get("limit")
+          ? Number(searchParams.get("limit"))
+          : 10,
+        categoryId: categoryIdNum,
+      }),
     enabled: !!categoryIdNum,
   });
-  
+
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);
     setIsModalOpen(true);
   };
-  
+
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedProduct(null);
   };
-  
+
   const handleAddToCart = (product: Product, quantity: number) => {
     addItem(product, quantity);
     toast.success(`${product.name} added to cart!`);
   };
-  
+
   if (categoryLoading || subcategoriesLoading || productsLoading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -59,29 +69,34 @@ const SubcategoriesPage: React.FC = () => {
       </div>
     );
   }
-  
+
   if (!category) {
     return (
       <div className="text-center py-12">
-        <h2 className="text-2xl font-bold text-gray-700 mb-4">Category not found</h2>
+        <h2 className="text-2xl font-bold text-gray-700 mb-4">
+          Category not found
+        </h2>
         <Link to="/" className="text-indigo-600 hover:text-indigo-800">
           Return to Home
         </Link>
       </div>
     );
   }
-  
+
   return (
     <div>
       {/* Header */}
       <div className="mb-8">
-        <Link to="/" className="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-4">
+        <Link
+          to="/"
+          className="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-4"
+        >
           <ArrowLeft size={16} className="mr-1" />
           Back to Home
         </Link>
         <h1 className="text-3xl font-bold">{category.name}</h1>
       </div>
-      
+
       {/* Subcategories */}
       {subcategories && subcategories.length > 0 && (
         <div className="mb-10">
@@ -99,10 +114,12 @@ const SubcategoriesPage: React.FC = () => {
           </div>
         </div>
       )}
-      
+
       {/* Products */}
       <div>
-        <h2 className="text-xl font-semibold mb-4">Products in {category.name}</h2>
+        <h2 className="text-xl font-semibold mb-4">
+          Products in {category.name}
+        </h2>
         {products && products.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {products.map((product) => (
@@ -120,7 +137,7 @@ const SubcategoriesPage: React.FC = () => {
           </div>
         )}
       </div>
-      
+
       {/* Product Modal */}
       {selectedProduct && (
         <ProductModal

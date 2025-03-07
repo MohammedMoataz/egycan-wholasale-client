@@ -126,6 +126,8 @@ export interface Invoice {
 
 // Filter Types
 export interface ProductFilters {
+  page: number;
+  limit: number;
   categoryId?: number;
   subcategoryId?: number;
   brandId?: number;

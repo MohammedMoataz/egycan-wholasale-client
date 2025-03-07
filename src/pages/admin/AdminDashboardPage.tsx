@@ -10,22 +10,25 @@ import { getInvoices } from '../../api/invoices';
 const AdminDashboardPage: React.FC = () => {
   const { data: products } = useQuery({
     queryKey: ['products'],
-    queryFn: () => getProducts(),
+    queryFn: () => getProducts({
+      page: 1,
+      limit: 10
+    }),
   });
   
   const { data: categories } = useQuery({
     queryKey: ['categories'],
-    queryFn: getCategories,
+    queryFn: () => getCategories(1, 10),
   });
   
   const { data: brands } = useQuery({
     queryKey: ['brands'],
-    queryFn: getBrands,
+    queryFn: () => getBrands(1, 10),
   });
   
   const { data: invoices } = useQuery({
     queryKey: ['invoices'],
-    queryFn: getInvoices,
+    queryFn: () => getInvoices(1, 10),
   });
   
   // Calculate total sales

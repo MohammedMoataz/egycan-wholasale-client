@@ -21,6 +21,8 @@ const ProductsPage: React.FC = () => {
   
   // Get filters from URL
   const filters: ProductFilters = {
+    page: searchParams.get('page') ? Number(searchParams.get('page')) : 1,
+    limit: searchParams.get('limit') ? Number(searchParams.get('limit')) : 10,
     categoryId: searchParams.get('categoryId') ? Number(searchParams.get('categoryId')) : undefined,
     subcategoryId: searchParams.get('subcategoryId') ? Number(searchParams.get('subcategoryId')) : undefined,
     brandId: searchParams.get('brandId') ? Number(searchParams.get('brandId')) : undefined,

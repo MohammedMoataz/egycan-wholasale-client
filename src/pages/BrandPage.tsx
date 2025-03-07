@@ -26,7 +26,11 @@ const BrandPage: React.FC = () => {
   
   const { data: products, isLoading: productsLoading } = useQuery({
     queryKey: ['products', { brandId: brandIdNum }],
-    queryFn: () => getProducts({ brandId: brandIdNum }),
+    queryFn: () => getProducts({ 
+      page: 1,
+      limit: 10,
+      brandId: brandIdNum
+     }),
     enabled: !!brandIdNum,
   });
   

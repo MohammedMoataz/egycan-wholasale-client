@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { Plus, Edit, Trash, ChevronDown, ChevronRight } from 'lucide-react';
-import { getCategories, createCategory, updateCategory, deleteCategory } from '../../api/categories';
-import { getSubcategories, createSubcategory, updateSubcategory, deleteSubcategory } from '../../api/categories';
+import { getCategories, createCategory, updateCategory, deleteCategory, getAllSubcategories } from '../../api/categories';
+import { createSubcategory, updateSubcategory, deleteSubcategory } from '../../api/categories';
 import { Category, Subcategory } from '../../types';
 
 const AdminCategoriesPage: React.FC = () => {
@@ -22,13 +22,13 @@ const AdminCategoriesPage: React.FC = () => {
   // Fetch categories
   const { data: categories, isLoading: categoriesLoading } = useQuery({
     queryKey: ['categories'],
-    queryFn: getCategories,
+    queryFn: () => getCategories(1, 10),
   });
   
   // Fetch subcategories
   const { data: allSubcategories, isLoading: subcategoriesLoading } = useQuery({
     queryKey: ['allSubcategories'],
-    queryFn: () => getSubcategories(),
+    queryFn: () => getAllSubcategories(),
   });
   
   // Create category mutation

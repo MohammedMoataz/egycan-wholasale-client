@@ -1,7 +1,30 @@
 import React from 'react';
 import { X, User, Mail, Shield, Calendar, Phone, Building, Globe, FileText, Hash, CreditCard } from 'lucide-react';
 
-const UserDetailsModal = ({ selectedUser, setIsUserDetailsModalOpen }) => {
+interface User {
+  name: string;
+  email: string;
+  role: string;
+  phoneNumber: string;
+  createdAt: string;
+  businessName?: string;
+  businessType?: string;
+  businessEmail?: string;
+  businessPhone?: string;
+  website?: string;
+  businessAddress?: string;
+  documentUrl?: string;
+  registrationNumber?: string;
+  taxId?: string;
+  status?: string;
+}
+
+interface UserDetailsModalProps {
+  selectedUser: User;
+  setIsUserDetailsModalOpen: (isOpen: boolean) => void;
+}
+
+const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ selectedUser, setIsUserDetailsModalOpen }) => {
   // Group the user details into logical sections
   const personalInfo = [
     { icon: <User size={16} />, label: "Name", value: selectedUser.name },
@@ -31,7 +54,7 @@ const UserDetailsModal = ({ selectedUser, setIsUserDetailsModalOpen }) => {
   ];
 
   // Status badge styling
-  const getStatusColor = (status) => {
+  const getStatusColor = (status: string | undefined) => {
     switch(status?.toLowerCase()) {
       case 'active':
         return 'bg-green-100 text-green-800';
