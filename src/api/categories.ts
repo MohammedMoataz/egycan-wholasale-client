@@ -1,8 +1,8 @@
 import api from './axios';
 import { Category, Subcategory } from '../types';
 
-export const getCategories = async () => {
-  const response = await api.get<Category[]>('/categories');
+export const getCategories = async (page: number, limit: number) => {
+  const response = await api.get<Category[]>(`/categories?page=${page}&limit=${limit}`);
   return response.data.data;
 };
 
@@ -12,7 +12,7 @@ export const getCategory = async (id: number) => {
 };
 
 export const createCategory = async (name: string) => {
-  const response = await api.post<Category>('/categories', { name });
+  const response = await api.post<Category>(`/categories`, { name });
   return response.data;
 };
 
@@ -25,12 +25,13 @@ export const deleteCategory = async (id: number) => {
   await api.delete(`/categories/${id}`);
 };
 
-export const getSubcategories = async (categoryId?: number) => {
-  const url = categoryId
-    ? `/subcategories?categoryId=${categoryId}`
-    : '/subcategories';
+export const getAllSubcategories = async () => {
+  const response = await api.get<Subcategory[]>(`/subcategories`);
+  return response.data.data;
+};
 
-  const response = await api.get<Subcategory[]>(url);
+export const getSubcategories = async (categoryId: number) => {
+  const response = await api.get<Subcategory[]>(`/subcategories?categoryId=${categoryId}`);
   return response.data.data;
 };
 
@@ -56,5 +57,6 @@ export const updateSubcategory = async (id: number, name: string, categoryId: nu
 };
 
 export const deleteSubcategory = async (id: number) => {
-  await api.delete(`/subcategories/${id}`);
+  const response = await api.delete(`/subcategories/${id}`);
+  return response.data;
 };

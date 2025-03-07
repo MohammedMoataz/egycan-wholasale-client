@@ -1,13 +1,18 @@
 import api from './axios';
 import { Invoice } from '../types';
 
-export const getInvoices = async () => {
-  const response = await api.get<Invoice[]>('/invoices');
+export const getInvoices = async (page: number, limit: number) => {
+  const response = await api.get<Invoice[]>(`/invoices?page=${page}&limit=${limit}`);
   return response.data.data;
 };
 
 export const getInvoice = async (id: number) => {
   const response = await api.get<Invoice>(`/invoices/${id}`);
+  return response.data;
+};
+
+export const getMyInvoices = async (id: number) => {
+  const response = await api.get<Invoice>(`/my-invoices`);
   return response.data;
 };
 
@@ -22,14 +27,15 @@ export const updateInvoiceStatus = async (id: number, status: Invoice['status'])
 };
 
 export const deleteInvoice = async (id: number) => {
-  await api.delete(`/invoices/${id}`);
+  const response = await api.delete(`/invoices/${id}`);
+  return response.data;
 };
 
 export const downloadInvoicePdf = async (id: number) => {
   const response = await api.get(`/invoices/${id}/pdf`, {
     responseType: 'blob',
   });
-  
+
   const url = window.URL.createObjectURL(new Blob([response.data]));
   const link = document.createElement('a');
   link.href = url;

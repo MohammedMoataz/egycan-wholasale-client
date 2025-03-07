@@ -1,7 +1,7 @@
 import api from './axios';
 import { Product, ProductFilters } from '../types';
 
-export const getProducts = async (filters?: ProductFilters) => {
+export const getProducts = async (filters: ProductFilters) => {
   const response = await api.get<Product[]>('/products', { params: filters });
   return response.data.data;
 };
@@ -37,5 +37,6 @@ export const updateProduct = async (id: number, formData: FormData) => {
 };
 
 export const deleteProduct = async (id: number) => {
-  await api.delete(`/products/${id}`);
+  const response = await api.delete(`/products/${id}`);
+  return response.data;
 };
