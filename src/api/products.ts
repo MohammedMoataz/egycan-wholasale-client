@@ -15,7 +15,7 @@ export const searchProducts = async (query: string) => {
   const response = await api.get<Product[]>('/products/search', {
     params: { query },
   });
-  return response.data;
+  return response.data.data;
 };
 
 export const createProduct = async (formData: FormData) => {

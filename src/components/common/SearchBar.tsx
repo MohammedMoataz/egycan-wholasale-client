@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Search, X } from 'lucide-react';
-import { searchProducts } from '../../api/products';
-import { Product } from '../../types';
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { Search, X } from "lucide-react";
+import { searchProducts } from "../../api/products";
+import { Product } from "../../types";
 
 interface SearchBarProps {
   onClose: () => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ onClose }) => {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [results, setResults] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
@@ -18,14 +18,17 @@ const SearchBar: React.FC<SearchBarProps> = ({ onClose }) => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target as Node)
+      ) {
         setShowResults(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -38,7 +41,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onClose }) => {
           setResults(data);
           setShowResults(true);
         } catch (error) {
-          console.error('Error searching products:', error);
+          console.error("Error searching products:", error);
         } finally {
           setIsLoading(false);
         }
@@ -82,7 +85,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onClose }) => {
           {query && (
             <button
               type="button"
-              onClick={() => setQuery('')}
+              onClick={() => setQuery("")}
               className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600"
             >
               <X size={18} />
@@ -113,14 +116,18 @@ const SearchBar: React.FC<SearchBarProps> = ({ onClose }) => {
                     )}
                     <div>
                       <p className="font-medium">{product.name}</p>
-                      <p className="text-sm text-gray-600">${product.price.toFixed(2)}</p>
+                      <p className="text-sm text-gray-600">
+                        ${product.price.toFixed(2)}
+                      </p>
                     </div>
                   </div>
                 </li>
               ))}
             </ul>
           ) : query.length >= 2 ? (
-            <div className="p-4 text-center text-gray-500">No products found</div>
+            <div className="p-4 text-center text-gray-500">
+              No products found
+            </div>
           ) : null}
         </div>
       )}
