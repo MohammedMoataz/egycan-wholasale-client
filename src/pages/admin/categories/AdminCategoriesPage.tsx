@@ -11,12 +11,12 @@ import {
   message,
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { getCategories, getAllSubcategories } from "../../api/categories";
-import CategoryList from "./categories/CategoryList";
-import CategoryModal from "./categories/CategoryModal";
-import SubcategoryModal from "./categories/SubcategoryModal";
-import DeleteConfirmModal from "./categories/DeleteConfirmModal";
-import { Category, Meta, Subcategory } from "../../types";
+import { getCategories, getAllSubcategories } from "../../../api/categories";
+import CategoryList from "./CategoryList";
+import CategoryModal from "./CategoryModal";
+import SubcategoryModal from "./SubcategoryModal";
+import DeleteConfirmModal from "./DeleteConfirmModal";
+import { Category, Meta, Subcategory } from "../../../types";
 
 // Update types to include the new fields
 export interface EnhancedCategory extends Category {

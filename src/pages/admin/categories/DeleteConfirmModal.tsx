@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Typography } from "antd";
 import { useMutation } from "@tanstack/react-query";
 import { deleteCategory, deleteSubcategory } from "../../../api/categories";
-import { EnhancedCategory, EnhancedSubcategory } from "../AdminCategoriesPage";
+import { EnhancedCategory, EnhancedSubcategory } from "./AdminCategoriesPage";
 
 const { Text } = Typography;
 

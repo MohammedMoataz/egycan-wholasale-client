@@ -7,8 +7,8 @@ import {
   approveUser,
   rejectUser,
   deleteUser,
-} from "../../api/users";
-import { User } from "../../types";
+} from "../../../api/users";
+import { User } from "../../../types";
 import UserDetailsModal from "./UserModal";
 import { ConfirmationModal } from "./ConfirmationModal";
 const AdminUsersPage: React.FC = () => {

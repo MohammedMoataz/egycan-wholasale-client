@@ -3,7 +3,7 @@ import { Modal, Form, Input, Select, Upload, message } from "antd";
 import { PlusOutlined, LoadingOutlined } from "@ant-design/icons";
 import { useMutation } from "@tanstack/react-query";
 import { createSubcategory, updateSubcategory } from "../../../api/categories";
-import { EnhancedSubcategory } from "../AdminCategoriesPage";
+import { EnhancedSubcategory } from "./AdminCategoriesPage";
 import { Category } from "../../../types";
 
 interface SubcategoryModalProps {

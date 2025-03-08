@@ -3,7 +3,7 @@ import { Modal, Form, Input, Upload, message } from "antd";
 import { PlusOutlined, LoadingOutlined } from "@ant-design/icons";
 import { useMutation } from "@tanstack/react-query";
 import { createCategory, updateCategory } from "../../../api/categories";
-import { EnhancedCategory } from "../AdminCategoriesPage";
+import { EnhancedCategory } from "./AdminCategoriesPage";
 
 interface CategoryModalProps {
   isOpen: boolean;

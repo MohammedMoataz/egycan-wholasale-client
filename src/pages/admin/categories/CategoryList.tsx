@@ -8,7 +8,7 @@ import {
   RightOutlined,
   DownOutlined,
 } from "@ant-design/icons";
-import { EnhancedCategory, EnhancedSubcategory } from "../AdminCategoriesPage";
+import { EnhancedCategory, EnhancedSubcategory } from "./AdminCategoriesPage";
 
 const { Text, Title } = Typography;
 

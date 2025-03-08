@@ -20,12 +20,12 @@ import {
   createBrand,
   updateBrand,
   deleteBrand,
-} from "../../api/brands";
-import { Brand, Meta } from "../../types";
-import BrandTable from "./brands/BrandTable";
-import DeleteModal from "./brands/DeleteModal";
+} from "../../../api/brands";
+import { Brand, Meta } from "../../../types";
+import BrandTable from "./BrandTable";
+import DeleteModal from "./DeleteModal";
 // import Pagination from "./brand/Pagination";
-import BrandModal from "./brands/BrandModal";
+import BrandModal from "./BrandModal";
 
 const { Title } = Typography;
 const { Content } = Layout;

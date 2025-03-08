@@ -16,12 +16,12 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import CartPage from './pages/CartPage';
 import AccountPage from './pages/AccountPage';
-import AdminLoginPage from './pages/admin/AdminLoginPage';
+import AdminLoginPage from './pages/admin/login/AdminLoginPage';
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
-import AdminUsersPage from './pages/admin/AdminUsersPage';
-import AdminProductsPage from './pages/admin/AdminProductsPage';
-import AdminCategoriesPage from './pages/admin/AdminCategoriesPage';
-import AdminBrandsPage from './pages/admin/AdminBrandsPage';
+import AdminUsersPage from './pages/admin/users/AdminUsersPage';
+import AdminProductsPage from './pages/admin/products/AdminProductsPage';
+import AdminCategoriesPage from './pages/admin/categories/AdminCategoriesPage';
+import AdminBrandsPage from './pages/admin/brands/AdminBrandsPage';
 import AdminInvoicesPage from './pages/admin/AdminInvoicesPage';
 
 // Auth Guards

@@ -31,6 +31,12 @@ export interface User {
   updatedAt?: string;
 }
 
+// types/auth.ts
+export interface LoginFormData {
+  email: string;
+  password: string;
+}
+
 export interface AuthResponse {
   success: boolean;
   data: {

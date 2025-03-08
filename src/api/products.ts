@@ -15,7 +15,6 @@ export const searchProducts = async (query: string): Promise<Product[]> => {
   const response = await api.get<ProductResponse>('/products/search', {
     params: { query },
   });
-  console.log(response.data);
   return response.data.data as Product[];
 };
 
