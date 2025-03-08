@@ -1,99 +1,108 @@
-import React, { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'react-hot-toast';
-import { Plus, Edit, Trash, Search } from 'lucide-react';
-import { getBrands, createBrand, updateBrand, deleteBrand } from '../../api/brands';
-import { Brand } from '../../types';
+import React, { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-hot-toast";
+import { Plus, Edit, Trash, Search } from "lucide-react";
+import {
+  getBrands,
+  createBrand,
+  updateBrand,
+  deleteBrand,
+} from "../../api/brands";
+import { Brand } from "../../types";
 
 const AdminBrandsPage: React.FC = () => {
   const queryClient = useQueryClient();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [currentBrand, setCurrentBrand] = useState<Brand | null>(null);
-  const [brandName, setBrandName] = useState('');
-  
+  const [brandName, setBrandName] = useState("");
+
   // Fetch brands
-  const { data: brands, isLoading } = useQuery({
-    queryKey: ['brands'],
+  const { data, isLoading } = useQuery({
+    queryKey: ["brands"],
     queryFn: () => getBrands(1, 10),
   });
-  
+
+  const brands = data?.data || [];
+  const meta = data?.meta || {};
+
   // Create brand mutation
   const createBrandMutation = useMutation({
     mutationFn: (name: string) => createBrand(name),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['brands'] });
-      toast.success('Brand created successfully');
+      queryClient.invalidateQueries({ queryKey: ["brands"] });
+      toast.success("Brand created successfully");
       setIsModalOpen(false);
-      setBrandName('');
+      setBrandName("");
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || 'Failed to create brand');
+      toast.error(error.response?.data?.message || "Failed to create brand");
     },
   });
-  
+
   // Update brand mutation
   const updateBrandMutation = useMutation({
-    mutationFn: ({ id, name }: { id: number; name: string }) => updateBrand(id, name),
+    mutationFn: ({ id, name }: { id: number; name: string }) =>
+      updateBrand(id, name),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['brands'] });
-      toast.success('Brand updated successfully');
+      queryClient.invalidateQueries({ queryKey: ["brands"] });
+      toast.success("Brand updated successfully");
       setIsModalOpen(false);
-      setBrandName('');
+      setBrandName("");
       setCurrentBrand(null);
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || 'Failed to update brand');
+      toast.error(error.response?.data?.message || "Failed to update brand");
     },
   });
-  
+
   // Delete brand mutation
   const deleteBrandMutation = useMutation({
     mutationFn: (id: number) => deleteBrand(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['brands'] });
-      toast.success('Brand deleted successfully');
+      queryClient.invalidateQueries({ queryKey: ["brands"] });
+      toast.success("Brand deleted successfully");
       setIsDeleteModalOpen(false);
       setCurrentBrand(null);
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || 'Failed to delete brand');
+      toast.error(error.response?.data?.message || "Failed to delete brand");
     },
   });
-  
+
   const openCreateModal = () => {
     setCurrentBrand(null);
-    setBrandName('');
+    setBrandName("");
     setIsModalOpen(true);
   };
-  
+
   const openEditModal = (brand: Brand) => {
     setCurrentBrand(brand);
     setBrandName(brand.name);
     setIsModalOpen(true);
   };
-  
+
   const openDeleteModal = (brand: Brand) => {
     setCurrentBrand(brand);
     setIsDeleteModalOpen(true);
   };
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!brandName.trim()) return;
-    
+
     if (currentBrand) {
       updateBrandMutation.mutate({ id: currentBrand.id, name: brandName });
     } else {
       createBrandMutation.mutate(brandName);
     }
   };
-  
-  const filteredBrands = brands?.filter(brand => 
+
+  const filteredBrands = brands.filter((brand: { name: string }) =>
     brand.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  
+
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
@@ -106,7 +115,7 @@ const AdminBrandsPage: React.FC = () => {
           Add Brand
         </button>
       </div>
-      
+
       {/* Search */}
       <div className="mb-6">
         <div className="relative">
@@ -120,7 +129,7 @@ const AdminBrandsPage: React.FC = () => {
           <Search className="absolute left-3 top-2.5 text-gray-400" size={18} />
         </div>
       </div>
-      
+
       {/* Brands Table */}
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
@@ -147,13 +156,15 @@ const AdminBrandsPage: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {filteredBrands?.map((brand) => (
+                {filteredBrands.map((brand) => (
                   <tr key={brand.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-900">{brand.id}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{brand.name}</div>
+                      <div className="text-sm font-medium text-gray-900">
+                        {brand.name}
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-500">
@@ -176,10 +187,13 @@ const AdminBrandsPage: React.FC = () => {
                     </td>
                   </tr>
                 ))}
-                
-                {filteredBrands?.length === 0 && (
+
+                {filteredBrands.length === 0 && (
                   <tr>
-                    <td colSpan={4} className="px-6 py-4 text-center text-gray-500">
+                    <td
+                      colSpan={4}
+                      className="px-6 py-4 text-center text-gray-500"
+                    >
                       No brands found
                     </td>
                   </tr>
@@ -189,15 +203,15 @@ const AdminBrandsPage: React.FC = () => {
           </div>
         </div>
       )}
-      
+
       {/* Create/Edit Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
             <h2 className="text-xl font-semibold mb-4">
-              {currentBrand ? 'Edit Brand' : 'Add New Brand'}
+              {currentBrand ? "Edit Brand" : "Add New Brand"}
             </h2>
-            
+
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -211,7 +225,7 @@ const AdminBrandsPage: React.FC = () => {
                   className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
-              
+
               <div className="flex justify-end space-x-3">
                 <button
                   type="button"
@@ -222,30 +236,36 @@ const AdminBrandsPage: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  disabled={createBrandMutation.isPending || updateBrandMutation.isPending}
+                  disabled={
+                    createBrandMutation.isPending ||
+                    updateBrandMutation.isPending
+                  }
                   className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-70"
                 >
-                  {createBrandMutation.isPending || updateBrandMutation.isPending
-                    ? 'Saving...'
+                  {createBrandMutation.isPending ||
+                  updateBrandMutation.isPending
+                    ? "Saving..."
                     : currentBrand
-                    ? 'Update Brand'
-                    : 'Create Brand'}
+                    ? "Update Brand"
+                    : "Create Brand"}
                 </button>
               </div>
             </form>
           </div>
         </div>
       )}
-      
+
       {/* Delete Confirmation Modal */}
       {isDeleteModalOpen && currentBrand && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
             <h2 className="text-xl font-semibold mb-4">Confirm Delete</h2>
             <p className="mb-6">
-              Are you sure you want to delete <strong>{currentBrand.name}</strong>? This action cannot be undone.
+              Are you sure you want to delete{" "}
+              <strong>{currentBrand.name}</strong>? This action cannot be
+              undone.
             </p>
-            
+
             <div className="flex justify-end space-x-3">
               <button
                 onClick={() => setIsDeleteModalOpen(false)}
@@ -258,7 +278,7 @@ const AdminBrandsPage: React.FC = () => {
                 disabled={deleteBrandMutation.isPending}
                 className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-70"
               >
-                {deleteBrandMutation.isPending ? 'Deleting...' : 'Delete'}
+                {deleteBrandMutation.isPending ? "Deleting..." : "Delete"}
               </button>
             </div>
           </div>
