@@ -1,21 +1,21 @@
-export interface MetaData {
+export interface Meta {
   totalNoOfPages: number;
-  totalNoOfBrands: number;
+  totalNoOfData: number;
   currentPage: number;
   pageSize: number;
 }
 
 export interface ResponseData<T> {
-  data: T;
-  metaData: MetaData;
+  data: T[];
+  meta: Meta;
 }
 
 // User Types
 export interface User {
-  id: number;
+  id?: number;
   name: string;
   email: string;
-  role: 'customer' | 'admin';
+  role: 'customer' | 'manager' | 'admin';
   status: 'pending' | 'active' | 'rejected';
   phoneNumber: string;
   businessName?: string;
@@ -27,8 +27,8 @@ export interface User {
   website?: string;
   businessType?: string;
   documentUrl?: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface AuthResponse {
@@ -63,28 +63,42 @@ export interface BusinessInfo {
 
 // Product Types
 export interface Category {
-  id: number;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface Subcategory {
-  id: number;
-  name: string;
-  categoryId: number;
-  category?: Category;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface Brand {
-  id: number;
+  id?: number;
   name: string;
   description: string;
   imageUrl: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface CategoryResponse {
+  success: boolean;
+  data: ResponseData<Category> | Category
+}
+
+export interface Subcategory {
+  id?: number;
+  name: string;
+  categoryId: number;
+  category?: Category;
+  description: string;
+  imageUrl: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface SubcategoryResponse {
+  success: boolean;
+  data: ResponseData<Subcategory> | Subcategory
+}
+
+export interface Brand {
+  id?: number;
+  name: string;
+  description: string;
+  imageUrl: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface BrandResponse {
@@ -92,15 +106,21 @@ export interface BrandResponse {
   data: ResponseData<Brand> | Brand
 }
 
+export interface BrandFormData {
+  name: string;
+  description: string;
+  imageFile: File | null;
+}
+
 export interface ProductImage {
-  id: number;
+  id?: number;
   productId: number;
   imageUrl: string;
-  createdAt: string;
+  createdAt?: string;
 }
 
 export interface Product {
-  id: number;
+  id?: number;
   name: string;
   description: string;
   price: number;
@@ -108,8 +128,8 @@ export interface Product {
   categoryId: number;
   subcategoryId: number;
   brandId: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
   category?: Category;
   subcategory?: Subcategory;
   brand?: Brand;
@@ -118,31 +138,31 @@ export interface Product {
 
 // Cart Types
 export interface CartItem {
-  id: number;
+  id?: number;
   product: Product;
   quantity: number;
 }
 
 // Invoice Types
 export interface InvoiceItem {
-  id: number;
+  id?: number;
   invoiceId: number;
   productId: number;
   product?: Product;
   quantity: number;
   price: number;
-  createdAt: string;
+  createdAt?: string;
 }
 
 export interface Invoice {
-  id: number;
+  id?: number;
   userId: number;
   user?: User;
   totalPrice: number;
   status: 'pending' | 'paid' | 'shipped' | 'cancelled';
   pdfUrl: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
   items?: InvoiceItem[];
 }
 

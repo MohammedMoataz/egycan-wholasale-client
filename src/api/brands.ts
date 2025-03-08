@@ -1,9 +1,9 @@
 import api from './axios';
 import { Brand, BrandResponse, ResponseData } from '../types';
 
-export const getBrands = async (page: number, limit: number): Promise<ResponseData<Brand>[]> => {
-  const response = await api.get<BrandResponse[]>(`/brands?page=${page}&limit=${limit}`);
-  return response.data.data as ResponseData<Brand>[];
+export const getBrands = async (page: number, limit: number): Promise<ResponseData<Brand>> => {
+  const response = await api.get<BrandResponse>(`/brands?page=${page}&limit=${limit}`);
+  return response.data.data as ResponseData<Brand>;
 };
 
 export const getBrand = async (id: number): Promise<Brand> => {
