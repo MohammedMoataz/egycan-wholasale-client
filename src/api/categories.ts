@@ -9,7 +9,6 @@ import {
 
 export const getCategories = async (page: number, limit: number): Promise<ResponseData<Category>> => {
   const response = await api.get<CategoryResponse>(`/categories?page=${page}&limit=${limit}`);
-  console.log(response.data.data);
   return response.data.data as ResponseData<Category>;
 };
 
@@ -35,7 +34,6 @@ export const deleteCategory = async (id: number): Promise<boolean> => {
 
 export const getAllSubcategories = async (): Promise<ResponseData<Subcategory>> => {
   const response = await api.get<SubcategoryResponse>(`/subcategories`);
-  console.log(response.data.data);
   return response.data.data as ResponseData<Subcategory>;
 };
 

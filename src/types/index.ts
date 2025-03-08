@@ -67,13 +67,9 @@ export interface Category {
   name: string;
   description: string;
   imageUrl: string;
+  subcategories: Subcategory[];
   createdAt?: string;
   updatedAt?: string;
-}
-
-export interface CategoryResponse {
-  success: boolean;
-  data: ResponseData<Category> | Category
 }
 
 export interface Subcategory {
@@ -87,11 +83,6 @@ export interface Subcategory {
   updatedAt?: string;
 }
 
-export interface SubcategoryResponse {
-  success: boolean;
-  data: ResponseData<Subcategory> | Subcategory
-}
-
 export interface Brand {
   id?: number;
   name: string;
@@ -99,11 +90,6 @@ export interface Brand {
   imageUrl: string;
   createdAt?: string;
   updatedAt?: string;
-}
-
-export interface BrandResponse {
-  success: boolean;
-  data: ResponseData<Brand> | Brand
 }
 
 export interface BrandFormData {
@@ -124,7 +110,7 @@ export interface Product {
   name: string;
   description: string;
   price: number;
-  inStock: number;
+  inStock: boolean;
   categoryId: number;
   subcategoryId: number;
   brandId: number;
@@ -165,6 +151,28 @@ export interface Invoice {
   updatedAt?: string;
   items?: InvoiceItem[];
 }
+
+
+export interface BrandResponse {
+  success: boolean;
+  data: ResponseData<Brand> | Brand
+}
+
+export interface CategoryResponse {
+  success: boolean;
+  data: ResponseData<Category> | Category
+}
+
+export interface SubcategoryResponse {
+  success: boolean;
+  data: ResponseData<Subcategory> | Subcategory
+}
+
+export interface ProductResponse {
+  success: boolean;
+  data: ResponseData<Product> | Product | Product[]
+}
+
 
 // Filter Types
 export interface ProductFilters {
