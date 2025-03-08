@@ -1,3 +1,15 @@
+export interface MetaData {
+  totalNoOfPages: number;
+  totalNoOfBrands: number;
+  currentPage: number;
+  pageSize: number;
+}
+
+export interface ResponseData<T> {
+  data: T;
+  metaData: MetaData;
+}
+
 // User Types
 export interface User {
   id: number;
@@ -20,9 +32,12 @@ export interface User {
 }
 
 export interface AuthResponse {
-  user: User;
-  accessToken: string;
-  refreshToken: string;
+  success: boolean;
+  data: {
+    user: User;
+    accessToken: string;
+    refreshToken: string;
+  }
 }
 
 // Registration Types
@@ -66,8 +81,15 @@ export interface Subcategory {
 export interface Brand {
   id: number;
   name: string;
+  description: string;
+  imageUrl: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface BrandResponse {
+  success: boolean;
+  data: ResponseData<Brand> | Brand
 }
 
 export interface ProductImage {

@@ -28,7 +28,7 @@ export const createProduct = async (formData: FormData) => {
 };
 
 export const updateProduct = async (id: number, formData: FormData) => {
-  const response = await api.put<Product>(`/products/${id}`, formData, {
+  const response = await api.patch<Product>(`/products/${id}`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },

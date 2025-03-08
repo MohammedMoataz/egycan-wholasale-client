@@ -17,7 +17,7 @@ export const createBusgetBusiness = async (data: FormData) => {
 };
 
 export const updateBusgetBusiness = async (id: number, data: FormData) => {
-  const response = await api.put<BusinessInfo>(`/businesses/${id}`, data);
+  const response = await api.patch<BusinessInfo>(`/businesses/${id}`, data);
   return response.data;
 };
 

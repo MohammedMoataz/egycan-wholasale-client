@@ -17,7 +17,7 @@ export const createCategory = async (name: string) => {
 };
 
 export const updateCategory = async (id: number, name: string) => {
-  const response = await api.put<Category>(`/categories/${id}`, { name });
+  const response = await api.patch<Category>(`/categories/${id}`, { name });
   return response.data;
 };
 
@@ -49,7 +49,7 @@ export const createSubcategory = async (name: string, categoryId: number) => {
 };
 
 export const updateSubcategory = async (id: number, name: string, categoryId: number) => {
-  const response = await api.put<Subcategory>(`/subcategories/${id}`, {
+  const response = await api.patch<Subcategory>(`/subcategories/${id}`, {
     name,
     categoryId
   });
