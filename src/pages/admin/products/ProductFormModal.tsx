@@ -1,4 +1,3 @@
-// src/pages/components/ProductFormModal.tsx
 import React, { useState, useEffect } from "react";
 import {
   Modal,
@@ -177,6 +176,7 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({
         message.error("Image must be smaller than 5MB!");
         return false;
       }
+      setFileList((prevFileList) => [...prevFileList, file as UploadFile]);
       return false;
     },
     fileList,
@@ -311,6 +311,7 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({
             listType="picture-card"
             onChange={handleUploadChange}
             maxCount={5}
+            multiple
           >
             {fileList.length >= 5 ? null : (
               <div>

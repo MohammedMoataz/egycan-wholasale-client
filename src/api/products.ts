@@ -11,6 +11,11 @@ export const getProduct = async (id: number): Promise<Product> => {
   return response.data.data as Product;
 };
 
+export const getImage = async (fileName: string): Promise<Product> => {
+  const response = await api.get<ProductResponse>(`/products/${id}`);
+  return response.data.data as Product;
+};
+
 export const searchProducts = async (query: string): Promise<Product[]> => {
   const response = await api.get<ProductResponse>('/products/search', {
     params: { query },

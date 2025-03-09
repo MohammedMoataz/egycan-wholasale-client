@@ -1,13 +1,13 @@
+export interface ResponseData<T> {
+  data: T[];
+  meta: Meta;
+}
+
 export interface Meta {
   totalNoOfPages: number;
   totalNoOfData: number;
   currentPage: number;
   pageSize: number;
-}
-
-export interface ResponseData<T> {
-  data: T[];
-  meta: Meta;
 }
 
 export interface LoginFormData {

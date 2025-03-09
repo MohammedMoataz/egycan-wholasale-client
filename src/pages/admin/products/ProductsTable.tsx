@@ -2,7 +2,7 @@
 import React from "react";
 import { Table, Button, Space, Image, Typography, Tag } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import { Product } from "../../../types";
+import { Product,  ProductImage } from "../../../types";
 
 const { Text } = Typography;
 
@@ -25,7 +25,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
       dataIndex: "images",
       key: "image",
       width: 100,
-      render: (images: any[]) => (
+      render: (images: ProductImage[]) => (
         <div style={{ height: 60, width: 60 }}>
           {images && images.length > 0 ? (
             <Image

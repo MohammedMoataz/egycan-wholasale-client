@@ -22,11 +22,12 @@ const AdminProductsPage: React.FC = () => {
   const [currentProduct, setCurrentProduct] = React.useState<Product | null>(
     null
   );
+  const baseURL = 'http://localhost:4000/v1';
 
   // Fetch products
   const { data: productsResponse, isLoading } = useQuery({
     queryKey: ["products"],
-    queryFn: () => getProducts({ page: 1, limit: 10 }),
+    queryFn: () => getProducts({ page: 1, limit: 30 }),
   });
 
   // Fetch categories
@@ -42,6 +43,7 @@ const AdminProductsPage: React.FC = () => {
   });
 
   const products = productsResponse?.data || [];
+  // products.map(product => product.images?.map(image => image.imageUrl = `${baseURL}/products/images/${image.imageUrl}`))
   const categories = categoriesResponse?.data || [];
   const brands = brandsResponse?.data || [];
 
