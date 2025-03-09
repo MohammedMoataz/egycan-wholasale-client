@@ -18,7 +18,7 @@ import CartPage from './pages/CartPage';
 import AccountPage from './pages/AccountPage';
 import AdminLoginPage from './pages/admin/login/AdminLoginPage';
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
-import AdminUsersPage from './pages/admin/users/AdminUsersPage';
+import AdminBusinessesPage from './pages/admin/businesses/AdminBusinessesPage';
 import AdminProductsPage from './pages/admin/products/AdminProductsPage';
 import AdminCategoriesPage from './pages/admin/categories/AdminCategoriesPage';
 import AdminBrandsPage from './pages/admin/brands/AdminBrandsPage';
@@ -57,7 +57,8 @@ function App() {
           <Route path="/admin" element={<AdminLayout />}>
             <Route element={<AdminRoute />}>
               <Route index element={<AdminDashboardPage />} />
-              <Route path="users" element={<AdminUsersPage />} />
+              <Route path="agents" element={<AdminBusinessesPage />} />
+              <Route path="customers" element={<AdminBusinessesPage />} />
               <Route path="products" element={<AdminProductsPage />} />
               <Route path="categories" element={<AdminCategoriesPage />} />
               <Route path="brands" element={<AdminBrandsPage />} />

@@ -10,28 +10,6 @@ export interface ResponseData<T> {
   meta: Meta;
 }
 
-// User Types
-export interface User {
-  id?: number;
-  name: string;
-  email: string;
-  role: 'customer' | 'manager' | 'admin';
-  status: 'pending' | 'active' | 'rejected';
-  phoneNumber: string;
-  businessName?: string;
-  businessEmail?: string;
-  businessPhone?: string;
-  registrationNumber?: string;
-  taxId?: string;
-  businessAddress?: string;
-  website?: string;
-  businessType?: string;
-  documentUrl?: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-// types/auth.ts
 export interface LoginFormData {
   email: string;
   password: string;
@@ -50,21 +28,66 @@ export interface AuthResponse {
 export interface PersonalInfo {
   fullName: string;
   email: string;
-  phoneNumber: string;
+  phone: string;
   password: string;
   confirmPassword: string;
 }
 
 export interface BusinessInfo {
-  businessName: string;
-  businessEmail: string;
-  businessPhone: string;
-  registrationNumber: string;
-  taxId: string;
-  businessAddress: string;
-  website: string;
-  businessType: string;
+  name: string;
+  legalName: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  province: string;
+  postalCode: string;
   document?: File;
+}
+
+// User Types
+export interface User {
+  id?: number;
+  name: string;
+  email: string;
+  role: 'customer' | 'manager' | 'admin';
+  status: 'pending' | 'active' | 'rejected';
+  phone: string;
+  businessName?: string;
+  businessEmail?: string;
+  businessPhone?: string;
+  registrationNumber?: string;
+  taxId?: string;
+  businessAddress?: string;
+  website?: string;
+  businessType?: string;
+  documentUrl?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface Business {
+  id: number;
+  name: string;
+  legalName: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  province: string;
+  postalCode: string;
+  status: 'accepted' | 'pending' | 'rejected';
+  ownerId: number;
+  createdAt: string;
+  owner: {
+    id: number;
+    name: string;
+    email: string;
+    imageUrl: string | null;
+    role: string;
+    createdAt: string;
+    updatedAt: string;
+  };
 }
 
 // Product Types
@@ -178,6 +201,17 @@ export interface ProductResponse {
   success: boolean;
   data: ResponseData<Product> | Product | Product[]
 }
+
+export interface UserResponse {
+  success: boolean;
+  data: ResponseData<User> | User | User[]
+}
+
+export interface BusinessResponse {
+  success: boolean;
+  data: ResponseData<Business> | Business | Business[]
+}
+
 
 
 // Filter Types

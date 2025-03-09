@@ -1,66 +1,53 @@
 import api from './axios';
-import { User } from '../types';
+import { ResponseData, User, UserResponse } from '../types';
 
-export const getCurrentUser = async () => {
-    const response = await api.get<User>(`/users/me`);
-    return response.data;
+export const getCurrentUser = async (): Promise<ResponseData<User>> => {
+    const response = await api.get<UserResponse>(`/users/me`);
+    return response.data.data as ResponseData<User>;
 };
 
-export const updateUserProfile = async (data: {
-    name?: string;
-    email?: string;
-}) => {
-    const response = await api.patch<User>(`/users/me`, data);
-    return response.data;
+export const updateUserProfile = async (data: FormData): Promise<User> => {
+    const response = await api.patch<UserResponse>(`/users/me`, data);
+    return response.data.data as User;
 };
 
 export const updatePassword = async (data: {
     currentPassword: string;
     newPassword: string;
-}) => {
-    const response = await api.patch<User>(`/users/me/password`, data);
-    return response.data;
+}): Promise<User> => {
+    const response = await api.patch<UserResponse>(`/users/me/password`, data);
+    return response.data.data as User;
 };
 
-export const deleteAccount = async (password: string) => {
-    const response = await api.delete(`/users/me`, {
+export const deleteAccount = async (password: string): Promise<boolean> => {
+    const response = await api.delete<UserResponse>(`/users/me`, {
         data: { password }
     });
-    return response.data;
+    return response.data.success;
 };
 
 // Admin endpoints
-export const getAllUsers = async (page: number, limit: number) => {
-    const response = await api.get<User[]>(`/users?page=${page}&limit=${limit}`);
-    return response.data;
+export const getAllUsers = async (page: number, limit: number): Promise<ResponseData<User>> => {
+    const response = await api.get<UserResponse>(`/users?page=${page}&limit=${limit}`);
+    return response.data.data as ResponseData<User>;
 };
 
-export const getUser = async (userId: number) => {
-    const response = await api.get<User>(`/users/${userId}`);
-    return response.data;
+export const getUser = async (userId: number): Promise<User> => {
+    const response = await api.get<UserResponse>(`/users/${userId}`);
+    return response.data.data as User;
 };
 
-export const createUser = async (data: FormData) => {
-    const response = await api.post<User>(`/users`, data);
-    return response.data;
+export const createUser = async (data: FormData): Promise<User> => {
+    const response = await api.post<UserResponse>(`/users`, data);
+    return response.data.data as User;
 };
 
-export const editUser = async (userId: number, data: unknown) => {
-    const response = await api.patch<User>(`/users/${userId}`, data);
-    return response.data;
+export const editUser = async (userId: number, data: FormData): Promise<User> => {
+    const response = await api.patch<UserResponse>(`/users/${userId}`, data);
+    return response.data.data as User;
 };
 
-export const approveUser = async (userId: number) => {
-    const response = await api.patch<User>(`/users/${userId}/approve`);
-    return response.data;
-};
-
-export const rejectUser = async (userId: number) => {
-    const response = await api.patch<User>(`/users/${userId}/reject`);
-    return response.data;
-};
-
-export const deleteUser = async (userId: number) => {
-    const response = await api.delete(`/users/${userId}`);
-    return response.data;
+export const deleteUser = async (userId: number): Promise<boolean> => {
+    const response = await api.delete<UserResponse>(`/users/${userId}`);
+    return response.data.success;
 };
