@@ -54,7 +54,7 @@ const AdminBrandsPage: React.FC = () => {
   // });
 
   const brands: Brand[] = data?.data || [];
-  const meta: Meta = data?.meta || { totalNoOfPages: 1, totalNoOfData: 0 };
+  const meta: Meta = data?.meta;
 
   // Handlers
   const openCreateModal = () => {
@@ -107,7 +107,7 @@ const AdminBrandsPage: React.FC = () => {
     if (file) {
       setBrandData((prev) => {
         const newFormData = new FormData(prev);
-        newFormData.set("imageFile", file);
+        newFormData.set("image", file);
         return newFormData;
       });
 

@@ -25,7 +25,7 @@ const SubcategoryModal: React.FC<SubcategoryModalProps> = ({
 }) => {
   const [form] = Form.useForm();
   const [imageUrl, setImageUrl] = useState<string>("");
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [image, setImage] = useState<File | null>(null);
   const [imageLoading, setImageLoading] = useState(false);
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const SubcategoryModal: React.FC<SubcategoryModalProps> = ({
           form.setFieldsValue({ categoryId: selectedCategoryId });
         }
         setImageUrl("");
-        setImageFile(null);
+        setImage(null);
       }
     }
   }, [isOpen, subcategory, form, selectedCategoryId]);
@@ -78,8 +78,8 @@ const SubcategoryModal: React.FC<SubcategoryModalProps> = ({
       formData.append("description", values.description || "");
       formData.append("categoryId", values.categoryId.toString());
 
-      if (imageFile) {
-        formData.append("image", imageFile);
+      if (image) {
+        formData.append("image", image);
       }
 
       if (subcategory) {
@@ -95,7 +95,7 @@ const SubcategoryModal: React.FC<SubcategoryModalProps> = ({
   const handleCancel = () => {
     form.resetFields();
     setImageUrl("");
-    setImageFile(null);
+    setImage(null);
     onClose();
   };
 
@@ -112,7 +112,7 @@ const SubcategoryModal: React.FC<SubcategoryModalProps> = ({
       return false;
     }
 
-    setImageFile(file);
+    setImage(file);
     setImageUrl(URL.createObjectURL(file));
     return false; // Prevent automatic upload
   };

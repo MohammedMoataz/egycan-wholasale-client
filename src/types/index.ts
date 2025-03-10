@@ -124,12 +124,6 @@ export interface Brand {
   updatedAt?: string;
 }
 
-export interface BrandFormData {
-  name: string;
-  description: string;
-  imageFile: File | null;
-}
-
 export interface ProductImage {
   id?: number;
   productId: number;

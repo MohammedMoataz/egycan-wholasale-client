@@ -48,6 +48,7 @@ export const getSubcategory = async (id: number): Promise<Subcategory> => {
 };
 
 export const createSubcategory = async (data: FormData): Promise<Subcategory> => {
+  console.log(data);
   const response = await api.post<SubcategoryResponse>('/subcategories', data);
   return response.data.data as Subcategory;
 };

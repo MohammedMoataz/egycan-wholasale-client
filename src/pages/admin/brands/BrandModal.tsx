@@ -28,8 +28,8 @@ interface BrandModalProps {
   setImagePreview: (preview: string) => void;
   currentBrand: Brand | null;
   fileInputRef: React.RefObject<HTMLInputElement>;
-  createBrandMutation: any;
-  updateBrandMutation: any;
+  createBrandMutation;
+  updateBrandMutation;
 }
 
 const BrandModal: React.FC<BrandModalProps> = ({
@@ -78,7 +78,7 @@ const BrandModal: React.FC<BrandModalProps> = ({
       formData.forEach((value, key) => {
         newFormData.append(key, value);
       });
-      newFormData.set("imageFile", file.originFileObj);
+      newFormData.set("image", file.originFileObj);
 
       setFormData(newFormData);
 
@@ -98,7 +98,7 @@ const BrandModal: React.FC<BrandModalProps> = ({
     formData.forEach((value, key) => {
       newFormData.append(key, value);
     });
-    newFormData.delete("imageFile");
+    newFormData.delete("image");
 
     setFormData(newFormData);
   };

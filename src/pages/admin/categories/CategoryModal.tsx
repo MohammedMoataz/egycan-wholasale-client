@@ -20,7 +20,7 @@ const CategoryModal: React.FC<CategoryModalProps> = ({
 }) => {
   const [form] = Form.useForm();
   const [imageUrl, setImageUrl] = useState<string>("");
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [image, setImage] = useState<File | null>(null);
   const [imageLoading, setImageLoading] = useState(false);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const CategoryModal: React.FC<CategoryModalProps> = ({
       } else {
         form.resetFields();
         setImageUrl("");
-        setImageFile(null);
+        setImage(null);
       }
     }
   }, [isOpen, category, form]);
@@ -68,8 +68,8 @@ const CategoryModal: React.FC<CategoryModalProps> = ({
       formData.append("name", values.name);
       formData.append("description", values.description || "");
 
-      if (imageFile) {
-        formData.append("image", imageFile);
+      if (image) {
+        formData.append("image", image);
       }
 
       if (category) {
@@ -85,7 +85,7 @@ const CategoryModal: React.FC<CategoryModalProps> = ({
   const handleCancel = () => {
     form.resetFields();
     setImageUrl("");
-    setImageFile(null);
+    setImage(null);
     onClose();
   };
 
@@ -102,7 +102,7 @@ const CategoryModal: React.FC<CategoryModalProps> = ({
       return false;
     }
 
-    setImageFile(file);
+    setImage(file);
     setImageUrl(URL.createObjectURL(file));
     return false; // Prevent automatic upload
   };
