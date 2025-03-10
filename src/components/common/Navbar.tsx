@@ -6,11 +6,11 @@ import {
   Button,
   Dropdown,
   Badge,
-  Drawer,
   Space,
   Avatar,
   Typography,
   Grid,
+  Drawer,
 } from "antd";
 import {
   ShoppingCartOutlined,
@@ -32,10 +32,10 @@ const { useBreakpoint } = Grid;
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const screens = useBreakpoint();
   const { isAuthenticated, user, logout } = useAuthStore();
   const { totalItems } = useCartStore();
   const navigate = useNavigate();
+  const screens = useBreakpoint();
 
   const handleLogout = () => {
     logout();
@@ -120,7 +120,7 @@ const Navbar: React.FC = () => {
         <path d="M22 8.5C22 12.09 19.09 15 15.5 15C15.33 15 15.15 14.99 14.98 14.98C14.73 11.81 12.19 9.26 9.02 9.01C9.01 8.85 9 8.67 9 8.5C9 4.91 11.91 2 15.5 2C19.09 2 22 4.91 22 8.5ZM7 15.5C7 19.09 4.09 22 0.5 22C0.33 22 0.15 21.99 0 21.98V13.96C2.78 13.83 5 11.53 5 8.75C5 8.66 4.99 8.58 4.99 8.49C5.17 8.5 5.33 8.5 5.5 8.5C9.09 8.5 12 11.41 12 15C12 15.5 11.96 15.98 11.87 16.45C9.54 16.97 7.74 18.77 7.22 21.1C7.07 19.32 6.11 17.8 4.72 16.84C5.41 16.29 6 15.44 6.32 14.47C6.64 14.81 6.95 15.14 7.29 15.45C7.11 15.44 7.06 15.5 7 15.5Z" />
       </svg>
       <Typography.Title level={4} style={{ margin: 0, color: "#1890ff" }}>
-        ShopApp
+        {screens.md ? "ShopApp" : "SA"}
       </Typography.Title>
     </Link>
   );
@@ -151,18 +151,7 @@ const Navbar: React.FC = () => {
         <Logo />
 
         {/* Desktop Navigation */}
-        <div
-          style={
-            screens.md
-              ? {
-                  display: "flex",
-                }
-              : {
-                  display: "none",
-                }
-          }
-          className="desktop-nav"
-        >
+        {screens.md && (
           <Menu
             mode="horizontal"
             style={{
@@ -193,10 +182,22 @@ const Navbar: React.FC = () => {
                   menu={{ items: userMenuItems }}
                   placement="bottomRight"
                 >
-                  <Button type="text" style={{ height: "100%" }}>
+                  <Button
+                    type="text"
+                    style={{ height: "100%", padding: "0 8px" }}
+                  >
                     <Space>
                       <Avatar size="small" icon={<UserOutlined />} />
-                      <span>{user?.name}</span>
+                      {screens.lg && (
+                        <Text
+                          style={{
+                            maxWidth: screens.xl ? "150px" : "100px",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {user?.name}
+                        </Text>
+                      )}
                     </Space>
                   </Button>
                 </Dropdown>
@@ -209,29 +210,21 @@ const Navbar: React.FC = () => {
 
             {/* Cart */}
             <Menu.Item key="cart">
-              <Link to="/cart">
+              <Link
+                to="/cart"
+                style={{ display: "flex", alignItems: "center" }}
+              >
                 <Badge count={totalItems} showZero={false}>
                   <ShoppingCartOutlined style={{ fontSize: "18px" }} />
                 </Badge>
+                {screens.lg && <Text style={{ marginLeft: "8px" }}>Cart</Text>}
               </Link>
             </Menu.Item>
           </Menu>
-        </div>
+        )}
 
         {/* Mobile Navigation */}
-        <div
-          style={
-            !screens.md
-              ? {
-                  display: "flex",
-                  alignItems: "center",
-                }
-              : {
-                  display: "none",
-                }
-          }
-          className="mobile-nav"
-        >
+        {!screens.md && (
           <Space size="middle">
             <Button
               type="text"
@@ -251,7 +244,7 @@ const Navbar: React.FC = () => {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             />
           </Space>
-        </div>
+        )}
       </div>
 
       {/* Search Bar */}
@@ -276,7 +269,7 @@ const Navbar: React.FC = () => {
         closable={true}
         onClose={() => setIsMenuOpen(false)}
         open={isMenuOpen}
-        width={250}
+        width={screens.sm ? 300 : 250}
       >
         <Menu
           mode="vertical"

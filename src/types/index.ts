@@ -175,7 +175,6 @@ export interface Invoice {
   user?: User;
   totalPrice: number;
   status: 'pending' | 'paid' | 'shipped' | 'cancelled';
-  pdfUrl: string;
   createdAt?: string;
   updatedAt?: string;
   items?: InvoiceItem[];
