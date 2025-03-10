@@ -30,7 +30,7 @@ const AccountPage: React.FC = () => {
     queryKey: ['currentUser'],
     queryFn: getCurrentUser,
   });
-  
+
   // Update profile mutation
   const updateProfileMutation = useMutation({
     mutationFn: updateUserProfile,

@@ -21,7 +21,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, loading }) => {
   const passwordRules = [{ required: true, message: "Password is required" }];
 
   return (
-    <Card bordered={false} className="shadow-md">
+    <Card variant={false} className="shadow-md">
       <div className="p-4">
         <Title level={2} className="text-center mb-6">
           Admin Login

@@ -116,7 +116,7 @@ const AppFooter: React.FC = () => {
           </Col>
 
           {/* Categories */}
-          <Col xs={24} sm={12} md={6} lg={6}>
+          {/* <Col xs={24} sm={12} md={6} lg={6}>
             <Title
               level={5}
               style={{
@@ -129,7 +129,7 @@ const AppFooter: React.FC = () => {
             <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
               <li style={{ marginBottom: screens.sm ? "8px" : "6px" }}>
                 <Link
-                  to="/products?category=1"
+                  to="/products?categoryId=1"
                   style={{ color: "rgba(255, 255, 255, 0.65)" }}
                 >
                   Electronics
@@ -137,7 +137,7 @@ const AppFooter: React.FC = () => {
               </li>
               <li style={{ marginBottom: screens.sm ? "8px" : "6px" }}>
                 <Link
-                  to="/products?category=2"
+                  to="/products?categoryId=2"
                   style={{ color: "rgba(255, 255, 255, 0.65)" }}
                 >
                   Clothing
@@ -145,14 +145,14 @@ const AppFooter: React.FC = () => {
               </li>
               <li style={{ marginBottom: screens.sm ? "8px" : "6px" }}>
                 <Link
-                  to="/products?category=3"
+                  to="/products?categoryId=3"
                   style={{ color: "rgba(255, 255, 255, 0.65)" }}
                 >
                   Home & Kitchen
                 </Link>
               </li>
             </ul>
-          </Col>
+          </Col> */}
 
           {/* Contact */}
           <Col xs={24} sm={24} md={6} lg={6}>

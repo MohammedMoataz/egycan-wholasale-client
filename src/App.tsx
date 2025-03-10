@@ -10,7 +10,7 @@ import AdminLayout from "./layouts/AdminLayout";
 
 // Pages
 import HomePage from "./pages/HomePage";
-import ProductsPage from "./pages/ProductsPage";
+import ProductsPage from "./pages/products/ProductsPage";
 import SubcategoriesPage from "./pages/SubcategoriesPage";
 import BrandPage from "./pages/BrandPage";
 import LoginPage from "./pages/LoginPage";

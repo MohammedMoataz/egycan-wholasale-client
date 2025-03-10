@@ -26,7 +26,7 @@ export interface AuthResponse {
 
 // Registration Types
 export interface PersonalInfo {
-  fullName: string;
+  name: string;
   email: string;
   phone: string;
   password: string;
@@ -42,10 +42,16 @@ export interface BusinessInfo {
   city: string;
   province: string;
   postalCode: string;
-  document?: File;
 }
 
 // User Types
+export interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+}
+
 export interface User {
   id?: number;
   name: string;
@@ -59,9 +65,6 @@ export interface User {
   registrationNumber?: string;
   taxId?: string;
   businessAddress?: string;
-  website?: string;
-  businessType?: string;
-  documentUrl?: string;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -211,6 +214,10 @@ export interface BusinessResponse {
   data: ResponseData<Business> | Business | Business[]
 }
 
+export interface InvoiceResponse {
+  success: boolean;
+  data: ResponseData<Invoice> | Invoice | Invoice[]
+}
 
 
 // Filter Types

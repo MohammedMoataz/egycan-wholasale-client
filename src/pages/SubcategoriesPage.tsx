@@ -28,13 +28,14 @@ const SubcategoriesPage: React.FC = () => {
     enabled: !!categoryIdNum,
   });
 
-  const { data: subcategories, isLoading: subcategoriesLoading } = useQuery({
-    queryKey: ["subcategories", categoryIdNum],
-    queryFn: () => getSubcategories(categoryIdNum),
-    enabled: !!categoryIdNum,
-  });
+  const { data: subcategoriesResponse, isLoading: subcategoriesLoading } =
+    useQuery({
+      queryKey: ["subcategories", categoryIdNum],
+      queryFn: () => getSubcategories(categoryIdNum),
+      enabled: !!categoryIdNum,
+    });
 
-  const { data: products, isLoading: productsLoading } = useQuery({
+  const { data: productsResponse, isLoading: productsLoading } = useQuery({
     queryKey: ["products", { categoryId: categoryIdNum }],
     queryFn: () =>
       getProducts({
@@ -46,6 +47,9 @@ const SubcategoriesPage: React.FC = () => {
       }),
     enabled: !!categoryIdNum,
   });
+
+  const subcategories = subcategoriesResponse?.data;
+  const products = productsResponse?.data;
 
   const handleProductClick = (product: Product) => {
     setSelectedProduct(product);

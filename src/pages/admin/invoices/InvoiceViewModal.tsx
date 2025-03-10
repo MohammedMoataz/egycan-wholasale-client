@@ -277,7 +277,7 @@ const InvoiceViewModal: React.FC<InvoiceViewModalProps> = ({
         {/* Invoice Details Card */}
         <Col xs={24} md={12}>
           <Card title="Invoice Details" size="small" style={{ height: "100%" }}>
-            <Descriptions column={1} size="small" bordered={false}>
+            <Descriptions column={1} size="small" variant={false}>
               <Descriptions.Item label="Invoice Number">
                 <Text strong>{invoice.id}</Text>
               </Descriptions.Item>
@@ -298,7 +298,7 @@ const InvoiceViewModal: React.FC<InvoiceViewModalProps> = ({
           columns={columns}
           dataSource={invoice.items?.map((item) => ({ ...item, key: item.id }))}
           pagination={false}
-          bordered
+          variant
           summary={(pageData) => {
             return (
               <Table.Summary fixed>

@@ -44,10 +44,12 @@ const AdminInvoicesPage: React.FC = () => {
   const [currentInvoice, setCurrentInvoice] = useState<Invoice | null>(null);
 
   // Fetch invoices
-  const { data: invoices, isLoading } = useQuery({
+  const { data: invoicesResponse, isLoading } = useQuery({
     queryKey: ["invoices"],
     queryFn: () => getInvoices(1, 10),
   });
+  const invoices = invoicesResponse?.data;
+  const meta = invoicesResponse?.meta;
 
   // Update invoice status mutation
   const updateStatusMutation = useMutation({
@@ -114,7 +116,7 @@ const AdminInvoicesPage: React.FC = () => {
   const filteredInvoices = invoices?.filter((invoice) => {
     const matchesSearch =
       invoice.user?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      invoice.id.toString().includes(searchTerm);
+      invoice.id?.toString().includes(searchTerm);
 
     const matchesStatus =
       statusFilter === "all" || invoice.status === statusFilter;
@@ -236,7 +238,7 @@ const AdminInvoicesPage: React.FC = () => {
           dropdownStyle={{ minWidth: 150 }}
           // Apply colored styling to the select component
           dropdownMatchSelectWidth={false}
-          bordered
+          variant
           className={`status-select status-${status}`}
         />
       ),
@@ -302,7 +304,7 @@ const AdminInvoicesPage: React.FC = () => {
               key: invoice.id,
             }))}
             pagination={{ pageSize: 10 }}
-            bordered
+            variant
             locale={{ emptyText: "No invoices found" }}
           />
         )}

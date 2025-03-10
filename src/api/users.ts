@@ -1,9 +1,9 @@
 import api from './axios';
 import { ResponseData, User, UserResponse } from '../types';
 
-export const getCurrentUser = async (): Promise<ResponseData<User>> => {
+export const getCurrentUser = async (): Promise<User> => {
     const response = await api.get<UserResponse>(`/users/me`);
-    return response.data.data as ResponseData<User>;
+    return response.data.data as User;
 };
 
 export const updateUserProfile = async (data: FormData): Promise<User> => {

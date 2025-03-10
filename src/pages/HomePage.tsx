@@ -35,13 +35,13 @@ const heroCarouselItems = [
 ];
 
 const HomePage: React.FC = () => {
-  const { data: categories, isLoading: categoriesLoading } = useQuery({
+  const { data: categoriesResponse, isLoading: categoriesLoading } = useQuery({
     queryKey: ["categories"],
     queryFn: () => getCategories(1, 10),
   });
 
   const { data: featuredProducts, isLoading: productsLoading } = useQuery({
-    queryKey: ["featuredProducts"],
+    queryKey: ["products"],
     queryFn: () =>
       getProducts({
         page: 1,
@@ -49,6 +49,9 @@ const HomePage: React.FC = () => {
         maxPrice: 1000,
       }),
   });
+
+  const categories = categoriesResponse?.data;
+  const products = featuredProducts?.data;
 
   // Custom arrow components for Slider
   const CustomPrevArrow = (props: any) => {
@@ -192,7 +195,7 @@ const HomePage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {featuredProducts?.slice(0, 4).map((product) => (
+          {products?.slice(0, 4).map((product) => (
             <Link
               key={product.id}
               to={`/products?id=${product.id}`}
@@ -223,7 +226,7 @@ const HomePage: React.FC = () => {
                     ${product.price.toFixed(2)}
                   </span>
                   <span className="text-sm text-blue-600">
-                    {product.inStock > 0 ? "In Stock" : "Out of Stock"}
+                    {product.inStock ? "In Stock" : "Out of Stock"}
                   </span>
                 </div>
               </div>
