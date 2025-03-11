@@ -12,7 +12,7 @@ export const getProduct = async (id: number): Promise<Product> => {
 };
 
 export const getImage = async (fileName: string): Promise<File> => {
-  const response = await api.get<File>(`/products/images/${fileName}`);
+  const response = await api.get<File>(`/uploads/${fileName}`);
   console.log(response.data)
   return response.data as File;
 };

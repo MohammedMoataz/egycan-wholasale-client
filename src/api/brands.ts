@@ -11,13 +11,21 @@ export const getBrand = async (id: number): Promise<Brand> => {
   return response.data.data as Brand;
 };
 
-export const createBrand = async (data: FormData): Promise<Brand> => {
-  const response = await api.post<BrandResponse>('/brands', data);
+export const createBrand = async (formData: FormData): Promise<Brand> => {
+  const response = await api.post<BrandResponse>('/brands', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   return response.data.data as Brand;
 };
 
-export const updateBrand = async (id: number, data: FormData): Promise<Brand> => {
-  const response = await api.patch<BrandResponse>(`/brands/${id}`, data);
+export const updateBrand = async (id: number, formData: FormData): Promise<Brand> => {
+  const response = await api.patch<BrandResponse>(`/brands/${id}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   return response.data.data as Brand;
 };
 

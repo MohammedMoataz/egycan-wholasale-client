@@ -1,15 +1,24 @@
-import React from "react";
-import { Brand } from "../../../types";
-import { Modal, Form, Input, Button, Upload, Space, Typography } from "antd";
+import React, { useEffect, useState } from "react";
 import {
-  EditOutlined,
+  Modal,
+  Form,
+  Input,
+  Button,
+  Upload,
+  Space,
+  Typography,
+  message,
+} from "antd";
+import {
+  UploadOutlined,
   PlusOutlined,
   SaveOutlined,
-  UploadOutlined,
   CloseOutlined,
   StarFilled,
+  EditOutlined,
 } from "@ant-design/icons";
 import type { UploadFile, UploadProps } from "antd/es/upload/interface";
+import { Brand } from "../../../types";
 
 const { TextArea } = Input;
 const { Title } = Typography;
@@ -20,16 +29,11 @@ interface BrandModalProps {
   formData: FormData;
   setFormData: React.Dispatch<React.SetStateAction<FormData>>;
   handleSubmit: (e: React.FormEvent) => void;
-  handleInputChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
-  handleImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   imagePreview: string;
   setImagePreview: (preview: string) => void;
   currentBrand: Brand | null;
-  fileInputRef: React.RefObject<HTMLInputElement>;
-  createBrandMutation;
-  updateBrandMutation;
+  createBrandMutation: any;
+  updateBrandMutation: any;
 }
 
 const BrandModal: React.FC<BrandModalProps> = ({
@@ -45,15 +49,30 @@ const BrandModal: React.FC<BrandModalProps> = ({
   updateBrandMutation,
 }) => {
   const [form] = Form.useForm();
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isModalOpen) {
       form.setFieldsValue({
         name: formData.get("name"),
         description: formData.get("description"),
       });
+
+      if (imagePreview) {
+        setFileList([
+          {
+            uid: "-1",
+            name: "brand-image",
+            status: "done",
+            url: imagePreview,
+            thumbUrl: imagePreview,
+          },
+        ]);
+      } else {
+        setFileList([]);
+      }
     }
-  }, [isModalOpen, formData, form]);
+  }, [isModalOpen, formData, form, imagePreview]);
 
   const handleCancel = () => {
     form.resetFields();
@@ -68,17 +87,24 @@ const BrandModal: React.FC<BrandModalProps> = ({
     newFormData.set("name", values.name);
     newFormData.set("description", values.description || "");
 
+    if (fileList.length > 0 && fileList[0].originFileObj) {
+      newFormData.set("image", fileList[0].originFileObj);
+    }
+
     setFormData(newFormData);
     handleSubmit(new Event("submit") as any);
   };
 
-  const handleFileChange: UploadProps["onChange"] = ({ file }) => {
-    if (file.originFileObj) {
+  const handleFileChange: UploadProps["onChange"] = ({ fileList }) => {
+    setFileList(fileList);
+
+    if (fileList.length > 0 && fileList[0].originFileObj) {
+      const file = fileList[0].originFileObj;
       const newFormData = new FormData();
       formData.forEach((value, key) => {
         newFormData.append(key, value);
       });
-      newFormData.set("image", file.originFileObj);
+      newFormData.set("image", file);
 
       setFormData(newFormData);
 
@@ -88,12 +114,15 @@ const BrandModal: React.FC<BrandModalProps> = ({
           setImagePreview(e.target.result as string);
         }
       };
-      reader.readAsDataURL(file.originFileObj);
+      reader.readAsDataURL(file);
+    } else {
+      setImagePreview("");
     }
   };
 
   const handleRemoveImage = () => {
     setImagePreview("");
+    setFileList([]);
     const newFormData = new FormData();
     formData.forEach((value, key) => {
       newFormData.append(key, value);
@@ -156,7 +185,7 @@ const BrandModal: React.FC<BrandModalProps> = ({
         <Form.Item label="Brand Image">
           <Upload
             listType="picture-card"
-            fileList={uploadFileList}
+            fileList={fileList}
             beforeUpload={() => false}
             onChange={handleFileChange}
             onRemove={handleRemoveImage}
