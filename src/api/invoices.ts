@@ -1,9 +1,9 @@
 import api from './axios';
 import { Invoice, InvoiceResponse, ResponseData } from '../types';
 
-export const getInvoices = async (page: number, limit: number): Promise<ResponseData<Invoice>> => {
+export const getInvoices = async (page: number, limit: number): Promise<Invoice[]> => {
   const response = await api.get<InvoiceResponse>(`/invoices?page=${page}&limit=${limit}`);
-  return response.data.data as ResponseData<Invoice>;
+  return response.data.data as Invoice[];
 };
 
 export const getInvoice = async (id: number): Promise<Invoice> => {

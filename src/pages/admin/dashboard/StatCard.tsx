@@ -18,7 +18,11 @@ const StatCard: React.FC<StatCardProps> = ({
   link,
 }) => {
   const cardContent = (
-    <Card hoverable style={{ borderRadius: 8 }} bodyStyle={{ padding: 20 }}>
+    <Card
+      hoverable
+      style={{ borderRadius: 8 }}
+      styles={{ body: { padding: 20 } }}
+    >
       <Statistic
         title={title}
         value={value}

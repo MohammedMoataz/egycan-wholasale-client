@@ -48,8 +48,8 @@ const AdminInvoicesPage: React.FC = () => {
     queryKey: ["invoices"],
     queryFn: () => getInvoices(1, 10),
   });
-  const invoices = invoicesResponse?.data;
-  const meta = invoicesResponse?.meta;
+  const invoices = invoicesResponse;
+  // const meta = invoicesResponse?.meta;
 
   // Update invoice status mutation
   const updateStatusMutation = useMutation({
@@ -238,7 +238,6 @@ const AdminInvoicesPage: React.FC = () => {
           dropdownStyle={{ minWidth: 150 }}
           // Apply colored styling to the select component
           dropdownMatchSelectWidth={false}
-          variant
           className={`status-select status-${status}`}
         />
       ),
@@ -257,7 +256,7 @@ const AdminInvoicesPage: React.FC = () => {
           <Button
             type="link"
             icon={<DownloadOutlined />}
-            onClick={() => handleDownloadPdf(record.id)}
+            onClick={() => handleDownloadPdf(record.id!)}
             title="Download PDF"
           />
           <Button
@@ -304,7 +303,6 @@ const AdminInvoicesPage: React.FC = () => {
               key: invoice.id,
             }))}
             pagination={{ pageSize: 10 }}
-            variant
             locale={{ emptyText: "No invoices found" }}
           />
         )}
@@ -323,7 +321,7 @@ const AdminInvoicesPage: React.FC = () => {
       )}
 
       {/* CSS for styling the status dropdown */}
-      <style jsx>{`
+      <style>{`
         /* Status-specific select styling */
         .status-select.status-pending .ant-select-selector {
           border-color: #fa8c16 !important;
