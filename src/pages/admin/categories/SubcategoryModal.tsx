@@ -83,7 +83,7 @@ const SubcategoryModal: React.FC<SubcategoryModalProps> = ({
       }
 
       if (subcategory) {
-        updateSubcategoryMutation.mutate({ id: subcategory.id, formData });
+        updateSubcategoryMutation.mutate({ id: subcategory.id!, formData });
       } else {
         createSubcategoryMutation.mutate(formData);
       }

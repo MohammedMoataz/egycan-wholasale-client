@@ -17,13 +17,21 @@ export const getCategory = async (id: number): Promise<Category> => {
   return response.data.data as Category;
 };
 
-export const createCategory = async (data: FormData): Promise<Category> => {
-  const response = await api.post<CategoryResponse>(`/categories`, data);
+export const createCategory = async (formData: FormData): Promise<Category> => {
+  const response = await api.post<CategoryResponse>(`/categories`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   return response.data.data as Category;
 };
 
-export const updateCategory = async (id: number, data: FormData): Promise<Category> => {
-  const response = await api.patch<CategoryResponse>(`/categories/${id}`, data);
+export const updateCategory = async (id: number, formData: FormData): Promise<Category> => {
+  const response = await api.patch<CategoryResponse>(`/categories/${id}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   return response.data.data as Category;;
 };
 
@@ -47,14 +55,21 @@ export const getSubcategory = async (id: number): Promise<Subcategory> => {
   return response.data.data as Subcategory;
 };
 
-export const createSubcategory = async (data: FormData): Promise<Subcategory> => {
-  console.log(data);
-  const response = await api.post<SubcategoryResponse>('/subcategories', data);
+export const createSubcategory = async (formData: FormData): Promise<Subcategory> => {
+  const response = await api.post<SubcategoryResponse>('/subcategories', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   return response.data.data as Subcategory;
 };
 
-export const updateSubcategory = async (id: number, data: FormData): Promise<Subcategory> => {
-  const response = await api.patch<SubcategoryResponse>(`/subcategories/${id}`, data);
+export const updateSubcategory = async (id: number, formData: FormData): Promise<Subcategory> => {
+  const response = await api.patch<SubcategoryResponse>(`/subcategories/${id}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   return response.data.data as Subcategory;
 };
 

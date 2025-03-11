@@ -109,7 +109,7 @@ const CategoryList: React.FC<CategoryListProps> = ({
                     }
                     description={
                       subcategory.description && (
-                        <Text type="secondary" ellipsis={{ rows: 2 }}>
+                        <Text type="secondary" ellipsis>
                           {subcategory.description}
                         </Text>
                       )
@@ -211,7 +211,7 @@ const CategoryList: React.FC<CategoryListProps> = ({
                 }
                 description={
                   category.description && (
-                    <Text type="secondary" ellipsis={{ rows: 2 }}>
+                    <Text type="secondary" ellipsis>
                       {category.description}
                     </Text>
                   )
