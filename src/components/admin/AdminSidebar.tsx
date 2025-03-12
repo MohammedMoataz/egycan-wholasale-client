@@ -1,85 +1,103 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  ShoppingBag, 
-  Tag, 
-  Bookmark, 
-  FileText, 
-  LogOut 
-} from 'lucide-react';
-import { useAuthStore } from '../../store/authStore';
+import React from "react";
+import { Layout, Menu, Typography, Grid } from "antd";
+import { Link, useLocation } from "react-router-dom";
+import {
+  DashboardOutlined,
+  ShoppingOutlined,
+  TagOutlined,
+  BookOutlined,
+  FileTextOutlined,
+  UsergroupAddOutlined,
+  UserOutlined,
+  LogoutOutlined,
+  ShopOutlined,
+} from "@ant-design/icons";
+import { useAuthStore } from "../../store/authStore";
+
+const { Sider } = Layout;
+const { Title } = Typography;
+const { useBreakpoint } = Grid;
 
 const AdminSidebar: React.FC = () => {
   const location = useLocation();
   const { logout } = useAuthStore();
-  
-  const isActive = (path: string) => {
-    return location.pathname === path;
-  };
-  
+  const screens = useBreakpoint();
+
   const menuItems = [
     {
-      path: '/admin',
-      name: 'Dashboard',
-      icon: <LayoutDashboard size={20} />,
+      key: "/admin",
+      icon: <DashboardOutlined />,
+      label: <Link to="/admin">Dashboard</Link>,
     },
     {
-      path: '/admin/products',
-      name: 'Products',
-      icon: <ShoppingBag size={20} />,
+      key: "/admin/agents",
+      icon: <UsergroupAddOutlined />,
+      label: <Link to="/admin/agents">Agents</Link>,
     },
     {
-      path: '/admin/categories',
-      name: 'Categories',
-      icon: <Tag size={20} />,
+      key: "/admin/customers",
+      icon: <ShopOutlined />,
+      label: <Link to="/admin/customers">Customers</Link>,
     },
     {
-      path: '/admin/brands',
-      name: 'Brands',
-      icon: <Bookmark size={20} />,
+      key: "/admin/products",
+      icon: <ShoppingOutlined />,
+      label: <Link to="/admin/products">Products</Link>,
     },
     {
-      path: '/admin/invoices',
-      name: 'Invoices',
-      icon: <FileText size={20} />,
+      key: "/admin/categories",
+      icon: <TagOutlined />,
+      label: <Link to="/admin/categories">Categories</Link>,
+    },
+    {
+      key: "/admin/brands",
+      icon: <BookOutlined />,
+      label: <Link to="/admin/brands">Brands</Link>,
+    },
+    {
+      key: "/admin/invoices",
+      icon: <FileTextOutlined />,
+      label: <Link to="/admin/invoices">Invoices</Link>,
+    },
+    {
+      key: "/admin/account",
+      icon: <UserOutlined />,
+      label: <Link to="/admin/account">Account</Link>,
+    },
+    {
+      key: "logout",
+      icon: <LogoutOutlined />,
+      label: "Logout",
+      onClick: () => logout(),
     },
   ];
-  
+
+  // Only render the sidebar if we're on md screens or larger
+  if (!screens.md) {
+    return null;
+  }
+
   return (
-    <div className="bg-indigo-800 text-white w-64 flex-shrink-0 hidden md:block">
-      <div className="p-6">
-        <Link to="/admin" className="text-2xl font-bold">Admin Panel</Link>
+    <Sider width={256} style={{ background: "#1d4ed8" }}>
+      <div style={{ padding: 24 }}>
+        <Link to="/admin">
+          <Title level={4} style={{ color: "white", margin: 0 }}>
+            Admin Panel
+          </Title>
+        </Link>
       </div>
-      
-      <nav className="mt-6">
-        <ul>
-          {menuItems.map((item) => (
-            <li key={item.path}>
-              <Link
-                to={item.path}
-                className={`flex items-center px-6 py-3 hover:bg-indigo-700 ${
-                  isActive(item.path) ? 'bg-indigo-700' : ''
-                }`}
-              >
-                <span className="mr-3">{item.icon}</span>
-                <span>{item.name}</span>
-              </Link>
-            </li>
-          ))}
-          
-          <li className="mt-6">
-            <button
-              onClick={() => logout()}
-              className="flex items-center px-6 py-3 w-full text-left hover:bg-indigo-700"
-            >
-              <span className="mr-3"><LogOut size={20} /></span>
-              <span>Logout</span>
-            </button>
-          </li>
-        </ul>
-      </nav>
-    </div>
+      <Menu
+        mode="inline"
+        selectedKeys={[location.pathname]}
+        style={{
+          background: "#1d4ed8",
+          color: "white",
+          borderRight: 0,
+        }}
+        items={menuItems}
+        theme="dark"
+      />
+    </Sider>
   );
 };
 

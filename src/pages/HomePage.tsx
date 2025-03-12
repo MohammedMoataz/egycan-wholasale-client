@@ -1,10 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { getCategories } from '../api/categories';
-import { getProducts } from '../api/products';
-import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
-import Slider from 'react-slick';
+import React from "react";
+import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getCategories } from "../api/categories";
+import { getProducts } from "../api/products";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -12,41 +12,53 @@ import "slick-carousel/slick/slick-theme.css";
 const heroCarouselItems = [
   {
     title: "Shop the Latest Products",
-    description: "Discover amazing products at unbeatable prices. Shop now and enjoy fast shipping!",
-    image: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-    backgroundColor: "bg-teal-700"
+    description:
+      "Discover amazing products at unbeatable prices. Shop now and enjoy fast shipping!",
+    image:
+      "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+    backgroundColor: "bg-teal-700",
   },
   {
     title: "Summer Sale Extravaganza",
     description: "Massive discounts on top brands. Limited time offer!",
-    image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-    backgroundColor: "bg-emerald-700"
+    image:
+      "https://images.unsplash.com/photo-1553531889-56cc480ac5cb?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    backgroundColor: "bg-emerald-700",
   },
   {
     title: "New Season, New Styles",
     description: "Explore our latest collection and refresh your wardrobe!",
-    image: "https://images.unsplash.com/photo-1503342217505-b0a987ec57a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-    backgroundColor: "bg-cyan-700"
-  }
+    image:
+      "https://images.unsplash.com/photo-1713646778050-2213b4140e6b?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    backgroundColor: "bg-cyan-700",
+  },
 ];
 
 const HomePage: React.FC = () => {
-  const { data: categories, isLoading: categoriesLoading } = useQuery({
-    queryKey: ['categories'],
-    queryFn: getCategories
+  const { data: categoriesResponse, isLoading: categoriesLoading } = useQuery({
+    queryKey: ["categories"],
+    queryFn: () => getCategories(1, 10),
   });
-  
+
   const { data: featuredProducts, isLoading: productsLoading } = useQuery({
-    queryKey: ['featuredProducts'],
-    queryFn: () => getProducts({ maxPrice: 1000 })
+    queryKey: ["products"],
+    queryFn: () =>
+      getProducts({
+        page: 1,
+        limit: 10,
+        maxPrice: 1000,
+      }),
   });
-  
+
+  const categories = categoriesResponse?.data;
+  const products = featuredProducts?.data;
+
   // Custom arrow components for Slider
   const CustomPrevArrow = (props: any) => {
     const { onClick } = props;
     return (
-      <button 
-        onClick={onClick} 
+      <button
+        onClick={onClick}
         className="absolute z-10 top-1/2 left-4 -translate-y-1/2 bg-white/50 hover:bg-white/75 rounded-full p-2"
       >
         <ChevronLeft className="text-gray-800" />
@@ -57,8 +69,8 @@ const HomePage: React.FC = () => {
   const CustomNextArrow = (props: any) => {
     const { onClick } = props;
     return (
-      <button 
-        onClick={onClick} 
+      <button
+        onClick={onClick}
         className="absolute z-10 top-1/2 right-4 -translate-y-1/2 bg-white/50 hover:bg-white/75 rounded-full p-2"
       >
         <ChevronRight className="text-gray-800" />
@@ -78,9 +90,9 @@ const HomePage: React.FC = () => {
     dotsClass: "slick-dots custom-dot-class",
     customPaging: () => (
       <div className="h-2 w-2 bg-white/50 rounded-full mx-1 group-hover:bg-white/75"></div>
-    )
+    ),
   };
-  
+
   if (categoriesLoading || productsLoading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -88,23 +100,13 @@ const HomePage: React.FC = () => {
       </div>
     );
   }
-  
-  // Determine carousel items - use featured products if available, otherwise fallback
-  const carouselItems = featuredProducts?.length 
-    ? featuredProducts.slice(0, 3).map(product => ({
-        title: product.name,
-        description: product.description || "Discover our latest product",
-        image: product.images?.[0]?.imageUrl || heroCarouselItems[0].image,
-        backgroundColor: "bg-emerald-700"
-      }))
-    : heroCarouselItems;
 
   return (
     <div>
       {/* Hero Carousel Section */}
       <section className="mb-12">
         <Slider {...carouselSettings}>
-          {carouselItems.map((item, index) => (
+          {heroCarouselItems.map((item, index) => (
             <div key={index} className="relative h-[600px] w-full">
               {/* Background Image with Overlay */}
               <div className="absolute inset-0">
@@ -116,7 +118,7 @@ const HomePage: React.FC = () => {
                 {/* Dark Overlay */}
                 <div className="absolute inset-0 bg-black opacity-60"></div>
               </div>
-              
+
               {/* Content Overlay */}
               <div className="relative z-10 container mx-auto px-6 h-full flex items-center">
                 <div className="text-white max-w-xl">
@@ -139,17 +141,20 @@ const HomePage: React.FC = () => {
           ))}
         </Slider>
       </section>
-      
+
       {/* Categories Section */}
       <section className="mb-12 container mx-auto px-4">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-blue-800">Shop by Category</h2>
-          <Link to="/products" className="text-blue-100 hover:text-blue-800 flex items-center">
+          <Link
+            to="/products"
+            className="text-blue-100 hover:text-blue-800 flex items-center"
+          >
             View All
             <ArrowRight size={16} className="ml-1" />
           </Link>
         </div>
-        
+
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {categories?.slice(0, 8).map((category) => (
             <Link
@@ -165,25 +170,32 @@ const HomePage: React.FC = () => {
                 />
               </div>
               <div className="p-4 bg-blue-50">
-                <h3 className="font-semibold text-lg text-blue-800">{category.name}</h3>
+                <h3 className="font-semibold text-lg text-blue-800">
+                  {category.name}
+                </h3>
               </div>
             </Link>
           ))}
         </div>
       </section>
-      
+
       {/* Featured Products Section */}
       <section className="mb-12 container mx-auto px-4">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-blue-800">Featured Products</h2>
-          <Link to="/products" className="text-blue-600 hover:text-blue-800 flex items-center">
+          <h2 className="text-2xl font-bold text-blue-800">
+            Featured Products
+          </h2>
+          <Link
+            to="/products"
+            className="text-blue-600 hover:text-blue-800 flex items-center"
+          >
             View All
             <ArrowRight size={16} className="ml-1" />
           </Link>
         </div>
-        
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {featuredProducts?.slice(0, 4).map((product) => (
+          {products?.slice(0, 4).map((product) => (
             <Link
               key={product.id}
               to={`/products?id=${product.id}`}
@@ -203,12 +215,18 @@ const HomePage: React.FC = () => {
                 )}
               </div>
               <div className="p-4 bg-blue-50">
-                <h3 className="font-semibold text-lg mb-1 text-blue-900">{product.name}</h3>
-                <p className="text-blue-600 text-sm mb-2">{product.brand?.name}</p>
+                <h3 className="font-semibold text-lg mb-1 text-blue-900">
+                  {product.name}
+                </h3>
+                <p className="text-blue-600 text-sm mb-2">
+                  {product.brand?.name}
+                </p>
                 <div className="flex justify-between items-center">
-                  <span className="font-bold text-blue-700">${product.price.toFixed(2)}</span>
+                  <span className="font-bold text-blue-700">
+                    ${product.price.toFixed(2)}
+                  </span>
                   <span className="text-sm text-blue-600">
-                    {product.inStock > 0 ? 'In Stock' : 'Out of Stock'}
+                    {product.inStock ? "In Stock" : "Out of Stock"}
                   </span>
                 </div>
               </div>

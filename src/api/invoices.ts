@@ -1,35 +1,41 @@
 import api from './axios';
-import { Invoice } from '../types';
+import { Invoice, InvoiceResponse, ResponseData } from '../types';
 
-export const getInvoices = async () => {
-  const response = await api.get<Invoice[]>('/invoices');
-  return response.data.data;
+export const getInvoices = async (page: number, limit: number): Promise<Invoice[]> => {
+  const response = await api.get<InvoiceResponse>(`/invoices?page=${page}&limit=${limit}`);
+  return response.data.data as Invoice[];
 };
 
-export const getInvoice = async (id: number) => {
-  const response = await api.get<Invoice>(`/invoices/${id}`);
-  return response.data;
+export const getInvoice = async (id: number): Promise<Invoice> => {
+  const response = await api.get<InvoiceResponse>(`/invoices/${id}`);
+  return response.data.data as Invoice;
 };
 
-export const createInvoice = async (cartItems: { productId: number; quantity: number }[]) => {
-  const response = await api.post<Invoice>('/invoices', { items: cartItems });
-  return response.data;
+export const getMyInvoices = async (): Promise<Invoice[]> => {
+  const response = await api.get<InvoiceResponse>(`/my-invoices`);
+  return response.data.data as Invoice[];
 };
 
-export const updateInvoiceStatus = async (id: number, status: Invoice['status']) => {
-  const response = await api.patch<Invoice>(`/invoices/${id}/status`, { status });
-  return response.data;
+export const createInvoice = async (cartItems: { productId: number; quantity: number }[]): Promise<Invoice> => {
+  const response = await api.post<InvoiceResponse>('/invoices', { items: cartItems });
+  return response.data.data as Invoice;
 };
 
-export const deleteInvoice = async (id: number) => {
-  await api.delete(`/invoices/${id}`);
+export const updateInvoiceStatus = async (id: number, status: Invoice['status']): Promise<Invoice> => {
+  const response = await api.patch<InvoiceResponse>(`/invoices/${id}/status`, { status });
+  return response.data.data as Invoice;
 };
 
-export const downloadInvoicePdf = async (id: number) => {
-  const response = await api.get(`/invoices/${id}/pdf`, {
+export const deleteInvoice = async (id: number): Promise<boolean> => {
+  const response = await api.delete<InvoiceResponse>(`/invoices/${id}`);
+  return response.data.success;
+};
+
+export const downloadInvoicePdf = async (id: number): Promise<void> => {
+  const response = await api.get<InvoiceResponse>(`/invoices/${id}/pdf`, {
     responseType: 'blob',
   });
-  
+
   const url = window.URL.createObjectURL(new Blob([response.data]));
   const link = document.createElement('a');
   link.href = url;

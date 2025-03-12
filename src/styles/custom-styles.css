@@ -1,0 +1,89 @@
+/* Custom Styles to enhance Ant Design components */
+
+/* General styles */
+.ant-layout {
+    min-height: 100vh;
+}
+
+/* Fix Ant Design responsive layout issues */
+@media (max-width: 576px) {
+    .ant-layout-header {
+        padding: 0 12px !important;
+    }
+
+    .ant-layout-footer {
+        padding: 24px 12px !important;
+    }
+}
+
+/* SearchBar styles */
+.search-item-hover:hover {
+    background-color: #f5f5f5;
+}
+
+/* Navbar user button */
+.user-button .ant-typography {
+    max-width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Custom transitions */
+.ant-dropdown-menu,
+.ant-drawer,
+.ant-drawer-content-wrapper {
+    transition: all 0.3s ease;
+}
+
+/* Fix for drawer */
+.ant-drawer-body {
+    padding: 0;
+}
+
+.ant-drawer-body .ant-menu {
+    border-right: none;
+}
+
+/* Footer styles */
+.ant-layout-footer a:hover {
+    color: #ffffff !important;
+    transition: color 0.3s;
+}
+
+/* Responsive gutter adjustment */
+@media (max-width: 576px) {
+    .ant-row {
+        margin-right: -8px !important;
+        margin-left: -8px !important;
+    }
+
+    .ant-col {
+        padding-right: 8px !important;
+        padding-left: 8px !important;
+    }
+}
+
+/* Adjust search input responsiveness */
+@media (max-width: 576px) {
+    .ant-input-search .ant-input {
+        padding-right: 30px !important;
+    }
+
+    .ant-input-search .ant-input-suffix {
+        right: 0 !important;
+    }
+}
+
+/* Fix user menu dropdown */
+.ant-dropdown-menu-item a,
+.ant-dropdown-menu-item button {
+    display: flex;
+    align-items: center;
+}
+
+.ant-dropdown-menu-item .anticon {
+    margin-right: 8px;
+}

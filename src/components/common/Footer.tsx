@@ -1,97 +1,212 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Facebook, Twitter, Instagram, Mail, Phone } from 'lucide-react';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Layout, Row, Col, Typography, Space, Divider, Grid } from "antd";
+import {
+  FacebookOutlined,
+  TwitterOutlined,
+  InstagramOutlined,
+  MailOutlined,
+  PhoneOutlined,
+} from "@ant-design/icons";
 
-const Footer: React.FC = () => {
+const { Footer } = Layout;
+const { Title, Text, Paragraph } = Typography;
+const { useBreakpoint } = Grid;
+
+const AppFooter: React.FC = () => {
+  const screens = useBreakpoint();
+
   return (
-    <footer className="bg-gray-800 text-white">
-      <div className="container mx-auto px-4 py-10">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <Footer
+      style={{
+        backgroundColor: "#001529",
+        padding: screens.sm ? "48px 24px 24px" : "32px 16px 16px",
+        color: "rgba(255, 255, 255, 0.65)",
+      }}
+    >
+      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        <Row
+          gutter={[
+            { xs: 16, sm: 24, md: 32 },
+            { xs: 24, sm: 32 },
+          ]}
+        >
           {/* Company Info */}
-          <div>
-            <h3 className="text-xl font-bold mb-4">ShopApp</h3>
-            <p className="text-gray-300 mb-4">
-              Your one-stop shop for all your shopping needs. Quality products at affordable prices.
-            </p>
-            <div className="flex space-x-4">
-              <a href="#" className="text-gray-300 hover:text-white">
-                <Facebook size={20} />
+          <Col xs={24} sm={24} md={6} lg={6}>
+            <Title
+              level={4}
+              style={{
+                color: "#fff",
+                marginBottom: screens.md ? "16px" : "12px",
+              }}
+            >
+              ShopApp
+            </Title>
+            <Paragraph
+              style={{
+                color: "rgba(255, 255, 255, 0.65)",
+                marginBottom: "16px",
+              }}
+            >
+              Your one-stop shop for all your shopping needs. Quality products
+              at affordable prices.
+            </Paragraph>
+            <Space size={screens.sm ? "middle" : "small"}>
+              <a
+                href="#"
+                style={{
+                  color: "rgba(255, 255, 255, 0.65)",
+                  fontSize: screens.sm ? "20px" : "18px",
+                }}
+              >
+                <FacebookOutlined />
               </a>
-              <a href="#" className="text-gray-300 hover:text-white">
-                <Twitter size={20} />
+              <a
+                href="#"
+                style={{
+                  color: "rgba(255, 255, 255, 0.65)",
+                  fontSize: screens.sm ? "20px" : "18px",
+                }}
+              >
+                <TwitterOutlined />
               </a>
-              <a href="#" className="text-gray-300 hover:text-white">
-                <Instagram size={20} />
+              <a
+                href="#"
+                style={{
+                  color: "rgba(255, 255, 255, 0.65)",
+                  fontSize: screens.sm ? "20px" : "18px",
+                }}
+              >
+                <InstagramOutlined />
               </a>
-            </div>
-          </div>
+            </Space>
+          </Col>
 
           {/* Quick Links */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/" className="text-gray-300 hover:text-white">
+          <Col xs={24} sm={12} md={6} lg={6}>
+            <Title
+              level={5}
+              style={{
+                color: "#fff",
+                marginBottom: screens.md ? "16px" : "12px",
+              }}
+            >
+              Quick Links
+            </Title>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+              <li style={{ marginBottom: screens.sm ? "8px" : "6px" }}>
+                <Link to="/" style={{ color: "rgba(255, 255, 255, 0.65)" }}>
                   Home
                 </Link>
               </li>
-              <li>
-                <Link to="/products" className="text-gray-300 hover:text-white">
+              <li style={{ marginBottom: screens.sm ? "8px" : "6px" }}>
+                <Link
+                  to="/products"
+                  style={{ color: "rgba(255, 255, 255, 0.65)" }}
+                >
                   Products
                 </Link>
               </li>
-              <li>
-                <Link to="/cart" className="text-gray-300 hover:text-white">
+              <li style={{ marginBottom: screens.sm ? "8px" : "6px" }}>
+                <Link to="/cart" style={{ color: "rgba(255, 255, 255, 0.65)" }}>
                   Cart
                 </Link>
               </li>
             </ul>
-          </div>
+          </Col>
 
           {/* Categories */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Categories</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/products?category=1" className="text-gray-300 hover:text-white">
+          {/* <Col xs={24} sm={12} md={6} lg={6}>
+            <Title
+              level={5}
+              style={{
+                color: "#fff",
+                marginBottom: screens.md ? "16px" : "12px",
+              }}
+            >
+              Categories
+            </Title>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+              <li style={{ marginBottom: screens.sm ? "8px" : "6px" }}>
+                <Link
+                  to="/products?categoryId=1"
+                  style={{ color: "rgba(255, 255, 255, 0.65)" }}
+                >
                   Electronics
                 </Link>
               </li>
-              <li>
-                <Link to="/products?category=2" className="text-gray-300 hover:text-white">
+              <li style={{ marginBottom: screens.sm ? "8px" : "6px" }}>
+                <Link
+                  to="/products?categoryId=2"
+                  style={{ color: "rgba(255, 255, 255, 0.65)" }}
+                >
                   Clothing
                 </Link>
               </li>
-              <li>
-                <Link to="/products?category=3" className="text-gray-300 hover:text-white">
+              <li style={{ marginBottom: screens.sm ? "8px" : "6px" }}>
+                <Link
+                  to="/products?categoryId=3"
+                  style={{ color: "rgba(255, 255, 255, 0.65)" }}
+                >
                   Home & Kitchen
                 </Link>
               </li>
             </ul>
-          </div>
+          </Col> */}
 
           {/* Contact */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
-            <ul className="space-y-2">
-              <li className="flex items-center text-gray-300">
-                <Mail size={16} className="mr-2" />
+          <Col xs={24} sm={24} md={6} lg={6}>
+            <Title
+              level={5}
+              style={{
+                color: "#fff",
+                marginBottom: screens.md ? "16px" : "12px",
+              }}
+            >
+              Contact Us
+            </Title>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+              <li
+                style={{
+                  marginBottom: screens.sm ? "12px" : "8px",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <MailOutlined style={{ marginRight: "8px" }} />
                 <span>support@shopapp.com</span>
               </li>
-              <li className="flex items-center text-gray-300">
-                <Phone size={16} className="mr-2" />
+              <li
+                style={{
+                  marginBottom: screens.sm ? "12px" : "8px",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <PhoneOutlined style={{ marginRight: "8px" }} />
                 <span>+1 (555) 123-4567</span>
               </li>
             </ul>
-          </div>
-        </div>
+          </Col>
+        </Row>
 
-        <div className="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400">
-          <p>&copy; {new Date().getFullYear()} ShopApp. All rights reserved.</p>
-        </div>
+        <Divider
+          style={{
+            borderColor: "rgba(255, 255, 255, 0.2)",
+            margin: screens.sm ? "24px 0" : "16px 0",
+          }}
+        />
+
+        <Row>
+          <Col span={24} style={{ textAlign: "center" }}>
+            <Text style={{ color: "rgba(255, 255, 255, 0.45)" }}>
+              &copy; {new Date().getFullYear()} ShopApp. All rights reserved.
+            </Text>
+          </Col>
+        </Row>
       </div>
-    </footer>
+    </Footer>
   );
 };
 
-export default Footer;
+export default AppFooter;

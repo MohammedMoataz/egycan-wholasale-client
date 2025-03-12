@@ -1,30 +1,161 @@
-import React from 'react';
-import { Menu, Bell, User } from 'lucide-react';
-import { useAuthStore } from '../../store/authStore';
+import React, { useState } from "react";
+import { Layout, Avatar, Typography, Button, Grid, Drawer, Menu } from "antd";
+import { MenuOutlined, UserOutlined } from "@ant-design/icons";
+import { useAuthStore } from "../../store/authStore";
+import { Link } from "react-router-dom";
+import {
+  DashboardOutlined,
+  ShoppingOutlined,
+  TagOutlined,
+  BookOutlined,
+  FileTextOutlined,
+  UsergroupAddOutlined,
+  LogoutOutlined,
+  ShopOutlined,
+} from "@ant-design/icons";
+import { logout } from "../../api/auth";
+
+const { Header } = Layout;
+const { Text } = Typography;
+const { useBreakpoint } = Grid;
 
 const AdminHeader: React.FC = () => {
   const { user } = useAuthStore();
-  
+  const screens = useBreakpoint();
+  const [drawerVisible, setDrawerVisible] = useState(false);
+
+  const toggleDrawer = () => {
+    setDrawerVisible(!drawerVisible);
+  };
+
+  const menuItems = [
+    {
+      key: "/admin",
+      icon: <DashboardOutlined />,
+      label: <Link to="/admin">Dashboard</Link>,
+    },
+    {
+      key: "/admin/agents",
+      icon: <UsergroupAddOutlined />,
+      label: <Link to="/admin/agents">Agents</Link>,
+    },
+    {
+      key: "/admin/customers",
+      icon: <ShopOutlined />,
+      label: <Link to="/admin/customers">Customers</Link>,
+    },
+    {
+      key: "/admin/products",
+      icon: <ShoppingOutlined />,
+      label: <Link to="/admin/products">Products</Link>,
+    },
+    {
+      key: "/admin/categories",
+      icon: <TagOutlined />,
+      label: <Link to="/admin/categories">Categories</Link>,
+    },
+    {
+      key: "/admin/brands",
+      icon: <BookOutlined />,
+      label: <Link to="/admin/brands">Brands</Link>,
+    },
+    {
+      key: "/admin/invoices",
+      icon: <FileTextOutlined />,
+      label: <Link to="/admin/invoices">Invoices</Link>,
+    },
+    {
+      key: "/admin/account",
+      icon: <UserOutlined />,
+      label: <Link to="/admin/account">Account</Link>,
+    },
+    {
+      key: "logout",
+      icon: <LogoutOutlined />,
+      label: "Logout",
+      onClick: () => logout(),
+    },
+  ];
+
   return (
-    <header className="bg-white shadow-sm h-16 flex items-center px-6">
-      <button className="md:hidden mr-4">
-        <Menu size={24} />
-      </button>
-      
-      <div className="flex-1"></div>
-      
-      <div className="flex items-center space-x-4">
-        <div className="flex items-center">
-          <div className="mr-2 text-right hidden sm:block">
-            <p className="text-sm font-medium">{user?.name}</p>
-            <p className="text-xs text-gray-500">Admin</p>
-          </div>
-          <div className="h-10 w-10 rounded-full bg-indigo-500 flex items-center justify-center text-white">
-            <User size={20} />
-          </div>
+    <>
+      <Header
+        style={{
+          background: "#fff",
+          padding: "0 24px",
+          boxShadow: "0 1px 2px rgba(0, 0, 0, 0.03)",
+          height: 72,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        {!screens.md && (
+          <Button
+            type="text"
+            icon={<MenuOutlined />}
+            style={{ marginRight: 16 }}
+            onClick={toggleDrawer}
+          />
+        )}
+
+        <div style={{ flex: 1 }}></div>
+
+        <div style={{ display: "flex", alignItems: "center" }}>
+          {screens.sm && (
+            <div
+              style={{
+                marginRight: 20,
+                textAlign: "right",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <Text
+                strong
+                style={{
+                  fontSize: 16,
+                  lineHeight: "1.2",
+                  marginBottom: 0,
+                }}
+              >
+                {user?.name}
+              </Text>
+              <Text
+                type="secondary"
+                style={{
+                  fontSize: 12,
+                  lineHeight: "1.2",
+                  marginTop: 0,
+                }}
+              >
+                {(user?.role === "admin" && "Admin") || "Manager"}
+              </Text>
+            </div>
+          )}
+          <Avatar
+            style={{
+              backgroundColor: "#5B5FC7",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            icon={<UserOutlined />}
+            size={40}
+          />
         </div>
-      </div>
-    </header>
+      </Header>
+
+      <Drawer
+        title="Menu"
+        placement="left"
+        onClose={toggleDrawer}
+        onClick={toggleDrawer}
+        open={drawerVisible}
+      >
+        <Menu mode="vertical" items={menuItems} />
+      </Drawer>
+    </>
   );
 };
 

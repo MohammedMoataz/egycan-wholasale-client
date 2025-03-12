@@ -1,9 +1,33 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, User, Search, Menu, X } from 'lucide-react';
-import { useAuthStore } from '../../store/authStore';
-import { useCartStore } from '../../store/cartStore';
-import SearchBar from './SearchBar';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  Layout,
+  Menu,
+  Button,
+  Dropdown,
+  Badge,
+  Space,
+  Avatar,
+  Typography,
+  Grid,
+  Drawer,
+} from "antd";
+import {
+  ShoppingCartOutlined,
+  UserOutlined,
+  SearchOutlined,
+  MenuOutlined,
+  CloseOutlined,
+  LogoutOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
+import { useAuthStore } from "../../store/authStore";
+import { useCartStore } from "../../store/cartStore";
+import SearchBar from "./SearchBar";
+
+const { Header } = Layout;
+const { Text } = Typography;
+const { useBreakpoint } = Grid;
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,153 +35,250 @@ const Navbar: React.FC = () => {
   const { isAuthenticated, user, logout } = useAuthStore();
   const { totalItems } = useCartStore();
   const navigate = useNavigate();
+  const screens = useBreakpoint();
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate("/");
   };
 
-  return (
-    <nav className="bg-white shadow-md">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link to="/" className="text-xl font-bold text-indigo-600">
-            ShopApp
-          </Link>
+  const userMenuItems = [
+    {
+      key: "account",
+      icon: <SettingOutlined />,
+      label: <Link to="/account">Account Settings</Link>,
+    },
+    {
+      key: "logout",
+      icon: <LogoutOutlined />,
+      label: (
+        <Button
+          type="text"
+          onClick={handleLogout}
+          style={{ width: "100%", textAlign: "left" }}
+        >
+          Logout
+        </Button>
+      ),
+    },
+  ];
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-gray-700 hover:text-indigo-600">
-              Home
-            </Link>
-            <Link to="/products" className="text-gray-700 hover:text-indigo-600">
-              Products
-            </Link>
-            
-            {/* Search Icon (Desktop) */}
-            <button 
-              onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className="text-gray-700 hover:text-indigo-600"
-            >
-              <Search size={20} />
-            </button>
-            
+  const mobileMenuItems = [
+    {
+      key: "home",
+      label: <Link to="/">Home</Link>,
+    },
+    {
+      key: "products",
+      label: <Link to="/products">Products</Link>,
+    },
+    ...(isAuthenticated
+      ? [
+          {
+            key: "account",
+            label: <Link to="/account">Account Settings</Link>,
+          },
+          {
+            key: "logout",
+            label: (
+              <Button
+                type="text"
+                onClick={handleLogout}
+                style={{ width: "100%", textAlign: "left" }}
+              >
+                Logout
+              </Button>
+            ),
+          },
+        ]
+      : [
+          {
+            key: "login",
+            label: <Link to="/login">Login</Link>,
+          },
+        ]),
+  ];
+
+  // Logo component
+  const Logo = () => (
+    <Link
+      to="/"
+      className="logo-container"
+      style={{ display: "flex", alignItems: "center" }}
+    >
+      <svg
+        style={{
+          width: "32px",
+          height: "32px",
+          marginRight: "8px",
+          color: "#1890ff",
+        }}
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M22 8.5C22 12.09 19.09 15 15.5 15C15.33 15 15.15 14.99 14.98 14.98C14.73 11.81 12.19 9.26 9.02 9.01C9.01 8.85 9 8.67 9 8.5C9 4.91 11.91 2 15.5 2C19.09 2 22 4.91 22 8.5ZM7 15.5C7 19.09 4.09 22 0.5 22C0.33 22 0.15 21.99 0 21.98V13.96C2.78 13.83 5 11.53 5 8.75C5 8.66 4.99 8.58 4.99 8.49C5.17 8.5 5.33 8.5 5.5 8.5C9.09 8.5 12 11.41 12 15C12 15.5 11.96 15.98 11.87 16.45C9.54 16.97 7.74 18.77 7.22 21.1C7.07 19.32 6.11 17.8 4.72 16.84C5.41 16.29 6 15.44 6.32 14.47C6.64 14.81 6.95 15.14 7.29 15.45C7.11 15.44 7.06 15.5 7 15.5Z" />
+      </svg>
+      <Typography.Title level={4} style={{ margin: 0, color: "#1890ff" }}>
+        {screens.md ? "ShopApp" : "SA"}
+      </Typography.Title>
+    </Link>
+  );
+
+  return (
+    <Layout.Header
+      style={{
+        background: "#fff",
+        padding: "0 24px",
+        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.06)",
+        position: "sticky",
+        top: 0,
+        zIndex: 1000,
+        height: "auto",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: "1200px",
+          margin: "0 auto",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "12px 0",
+        }}
+      >
+        {/* Logo */}
+        <Logo />
+
+        {/* Desktop Navigation */}
+        {screens.md && (
+          <Menu
+            mode="horizontal"
+            style={{
+              border: "none",
+              background: "transparent",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Menu.Item key="home">
+              <Link to="/">Home</Link>
+            </Menu.Item>
+            <Menu.Item key="products">
+              <Link to="/products">Products</Link>
+            </Menu.Item>
+            <Menu.Item key="search">
+              <Button
+                type="text"
+                icon={<SearchOutlined />}
+                onClick={() => setIsSearchOpen(!isSearchOpen)}
+              />
+            </Menu.Item>
+
             {/* Auth Links */}
             {isAuthenticated ? (
-              <div className="relative group">
-                <button className="flex items-center text-gray-700 hover:text-indigo-600">
-                  <User size={20} className="mr-1" />
-                  <span>{user?.name}</span>
-                </button>
-                <div className="absolute right-0 w-48 mt-2 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block">
-                  <button
-                    onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-indigo-50"
-                  >
-                    Logout
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <Link to="/login" className="text-gray-700 hover:text-indigo-600">
-                Login
-              </Link>
-            )}
-            
-            {/* Cart */}
-            <Link to="/cart" className="relative text-gray-700 hover:text-indigo-600">
-              <ShoppingCart size={20} />
-              {totalItems > 0 && (
-                <span className="absolute -top-2 -right-2 bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  {totalItems}
-                </span>
-              )}
-            </Link>
-          </div>
-
-          {/* Mobile Navigation Button */}
-          <div className="md:hidden flex items-center space-x-4">
-            <button 
-              onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className="text-gray-700"
-            >
-              <Search size={20} />
-            </button>
-            
-            <Link to="/cart" className="relative text-gray-700">
-              <ShoppingCart size={20} />
-              {totalItems > 0 && (
-                <span className="absolute -top-2 -right-2 bg-indigo-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  {totalItems}
-                </span>
-              )}
-            </Link>
-            
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-gray-700"
-            >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
-        </div>
-        
-        {/* Search Bar */}
-        {isSearchOpen && (
-          <div className="py-3">
-            <SearchBar onClose={() => setIsSearchOpen(false)} />
-          </div>
-        )}
-        
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="md:hidden py-3 border-t">
-            <div className="flex flex-col space-y-3">
-              <Link 
-                to="/" 
-                className="text-gray-700 hover:text-indigo-600 py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Home
-              </Link>
-              <Link 
-                to="/products" 
-                className="text-gray-700 hover:text-indigo-600 py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Products
-              </Link>
-              
-              {isAuthenticated ? (
-                <>
-                  <div className="text-gray-700 py-2">
-                    <span>Hello, {user?.name}</span>
-                  </div>
-                  <button
-                    onClick={() => {
-                      handleLogout();
-                      setIsMenuOpen(false);
-                    }}
-                    className="text-left text-gray-700 hover:text-indigo-600 py-2"
-                  >
-                    Logout
-                  </button>
-                </>
-              ) : (
-                <Link 
-                  to="/login" 
-                  className="text-gray-700 hover:text-indigo-600 py-2"
-                  onClick={() => setIsMenuOpen(false)}
+              <Menu.Item key="user">
+                <Dropdown
+                  menu={{ items: userMenuItems }}
+                  placement="bottomRight"
                 >
-                  Login
-                </Link>
-              )}
-            </div>
-          </div>
+                  <Button
+                    type="text"
+                    style={{ height: "100%", padding: "0 8px" }}
+                  >
+                    <Space>
+                      <Avatar size="small" icon={<UserOutlined />} />
+                      {screens.lg && (
+                        <Text
+                          style={{
+                            maxWidth: screens.xl ? "150px" : "100px",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {user?.name}
+                        </Text>
+                      )}
+                    </Space>
+                  </Button>
+                </Dropdown>
+              </Menu.Item>
+            ) : (
+              <Menu.Item key="login">
+                <Link to="/login">Login</Link>
+              </Menu.Item>
+            )}
+
+            {/* Cart */}
+            <Menu.Item key="cart">
+              <Link
+                to="/cart"
+                style={{ display: "flex", alignItems: "center" }}
+              >
+                <Badge count={totalItems} showZero={false}>
+                  <ShoppingCartOutlined style={{ fontSize: "18px" }} />
+                </Badge>
+                {screens.lg && <Text style={{ marginLeft: "8px" }}>Cart</Text>}
+              </Link>
+            </Menu.Item>
+          </Menu>
+        )}
+
+        {/* Mobile Navigation */}
+        {!screens.md && (
+          <Space size="middle">
+            <Button
+              type="text"
+              icon={<SearchOutlined />}
+              onClick={() => setIsSearchOpen(!isSearchOpen)}
+            />
+
+            <Link to="/cart">
+              <Badge count={totalItems} showZero={false}>
+                <ShoppingCartOutlined style={{ fontSize: "20px" }} />
+              </Badge>
+            </Link>
+
+            <Button
+              type="text"
+              icon={isMenuOpen ? <CloseOutlined /> : <MenuOutlined />}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            />
+          </Space>
         )}
       </div>
-    </nav>
+
+      {/* Search Bar */}
+      {isSearchOpen && (
+        <div
+          style={{
+            padding: "12px 24px",
+            background: "#fff",
+            borderTop: "1px solid #f0f0f0",
+            maxWidth: "1200px",
+            margin: "0 auto",
+          }}
+        >
+          <SearchBar onClose={() => setIsSearchOpen(false)} />
+        </div>
+      )}
+
+      {/* Mobile Menu Drawer */}
+      <Drawer
+        title="Menu"
+        placement="right"
+        closable={true}
+        onClose={() => setIsMenuOpen(false)}
+        open={isMenuOpen}
+        width={screens.sm ? 300 : 250}
+      >
+        <Menu
+          mode="vertical"
+          style={{ border: "none" }}
+          items={mobileMenuItems}
+          onClick={() => setIsMenuOpen(false)}
+        />
+      </Drawer>
+    </Layout.Header>
   );
 };
 

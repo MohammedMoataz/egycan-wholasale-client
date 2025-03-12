@@ -1,26 +1,35 @@
 import api from './axios';
-import { Brand } from '../types';
+import { Brand, BrandResponse, ResponseData } from '../types';
 
-export const getBrands = async () => {
-  const response = await api.get<Brand[]>('/brands');
-  return response.data.data;
+export const getBrands = async (page: number, limit: number): Promise<ResponseData<Brand>> => {
+  const response = await api.get<BrandResponse>(`/brands?page=${page}&limit=${limit}`);
+  return response.data.data as ResponseData<Brand>;
 };
 
-export const getBrand = async (id: number) => {
-  const response = await api.get<Brand>(`/brands/${id}`);
-  return response.data;
+export const getBrand = async (id: number): Promise<Brand> => {
+  const response = await api.get<BrandResponse>(`/brands/${id}`);
+  return response.data.data as Brand;
 };
 
-export const createBrand = async (name: string) => {
-  const response = await api.post<Brand>('/brands', { name });
-  return response.data;
+export const createBrand = async (formData: FormData): Promise<Brand> => {
+  const response = await api.post<BrandResponse>('/brands', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return response.data.data as Brand;
 };
 
-export const updateBrand = async (id: number, name: string) => {
-  const response = await api.put<Brand>(`/brands/${id}`, { name });
-  return response.data;
+export const updateBrand = async (id: number, formData: FormData): Promise<Brand> => {
+  const response = await api.patch<BrandResponse>(`/brands/${id}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return response.data.data as Brand;
 };
 
-export const deleteBrand = async (id: number) => {
-  await api.delete(`/brands/${id}`);
+export const deleteBrand = async (id: number): Promise<boolean> => {
+  const response = await api.delete<BrandResponse>(`/brands/${id}`);
+  return response.data.success;
 };

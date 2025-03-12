@@ -1,60 +1,79 @@
 import api from './axios';
-import { Category, Subcategory } from '../types';
+import {
+  Category,
+  CategoryResponse,
+  ResponseData,
+  Subcategory,
+  SubcategoryResponse
+} from '../types';
 
-export const getCategories = async () => {
-  const response = await api.get<Category[]>('/categories');
-  return response.data.data;
+export const getCategories = async (page: number, limit: number): Promise<ResponseData<Category>> => {
+  const response = await api.get<CategoryResponse>(`/categories?page=${page}&limit=${limit}`);
+  return response.data.data as ResponseData<Category>;
 };
 
-export const getCategory = async (id: number) => {
-  const response = await api.get<Category>(`/categories/${id}`);
-  return response.data;
+export const getCategory = async (id: number): Promise<Category> => {
+  const response = await api.get<CategoryResponse>(`/categories/${id}`);
+  return response.data.data as Category;
 };
 
-export const createCategory = async (name: string) => {
-  const response = await api.post<Category>('/categories', { name });
-  return response.data;
-};
-
-export const updateCategory = async (id: number, name: string) => {
-  const response = await api.put<Category>(`/categories/${id}`, { name });
-  return response.data;
-};
-
-export const deleteCategory = async (id: number) => {
-  await api.delete(`/categories/${id}`);
-};
-
-export const getSubcategories = async (categoryId?: number) => {
-  const url = categoryId
-    ? `/subcategories?categoryId=${categoryId}`
-    : '/subcategories';
-
-  const response = await api.get<Subcategory[]>(url);
-  return response.data.data;
-};
-
-export const getSubcategory = async (id: number) => {
-  const response = await api.get<Subcategory>(`/subcategories/${id}`);
-  return response.data;
-};
-
-export const createSubcategory = async (name: string, categoryId: number) => {
-  const response = await api.post<Subcategory>('/subcategories', {
-    name,
-    categoryId
+export const createCategory = async (formData: FormData): Promise<Category> => {
+  const response = await api.post<CategoryResponse>(`/categories`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
   });
-  return response.data;
+  return response.data.data as Category;
 };
 
-export const updateSubcategory = async (id: number, name: string, categoryId: number) => {
-  const response = await api.put<Subcategory>(`/subcategories/${id}`, {
-    name,
-    categoryId
+export const updateCategory = async (id: number, formData: FormData): Promise<Category> => {
+  const response = await api.patch<CategoryResponse>(`/categories/${id}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
   });
-  return response.data;
+  return response.data.data as Category;;
 };
 
-export const deleteSubcategory = async (id: number) => {
-  await api.delete(`/subcategories/${id}`);
+export const deleteCategory = async (id: number): Promise<boolean> => {
+  const response = await api.delete<CategoryResponse>(`/categories/${id}`);
+  return response.data.success;
+};
+
+export const getAllSubcategories = async (): Promise<ResponseData<Subcategory>> => {
+  const response = await api.get<SubcategoryResponse>(`/subcategories`);
+  return response.data.data as ResponseData<Subcategory>;
+};
+
+export const getSubcategories = async (categoryId: number): Promise<ResponseData<Subcategory>> => {
+  const response = await api.get<SubcategoryResponse>(`/subcategories?categoryId=${categoryId}`);
+  return response.data.data as ResponseData<Subcategory>;
+};
+
+export const getSubcategory = async (id: number): Promise<Subcategory> => {
+  const response = await api.get<SubcategoryResponse>(`/subcategories/${id}`);
+  return response.data.data as Subcategory;
+};
+
+export const createSubcategory = async (formData: FormData): Promise<Subcategory> => {
+  const response = await api.post<SubcategoryResponse>('/subcategories', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return response.data.data as Subcategory;
+};
+
+export const updateSubcategory = async (id: number, formData: FormData): Promise<Subcategory> => {
+  const response = await api.patch<SubcategoryResponse>(`/subcategories/${id}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return response.data.data as Subcategory;
+};
+
+export const deleteSubcategory = async (id: number): Promise<boolean> => {
+  const response = await api.delete<SubcategoryResponse>(`/subcategories/${id}`);
+  return response.data.success;
 };

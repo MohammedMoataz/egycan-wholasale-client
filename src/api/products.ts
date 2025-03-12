@@ -1,41 +1,48 @@
 import api from './axios';
-import { Product, ProductFilters } from '../types';
+import { Product, ProductFilters, ProductResponse, ResponseData } from '../types';
 
-export const getProducts = async (filters?: ProductFilters) => {
-  const response = await api.get<Product[]>('/products', { params: filters });
-  return response.data.data;
+export const getProducts = async (filters?: ProductFilters): Promise<ResponseData<Product>> => {
+  const response = await api.get<ProductResponse>('/products', { params: filters });
+  return response.data.data as ResponseData<Product>;
 };
 
-export const getProduct = async (id: number) => {
-  const response = await api.get<Product>(`/products/${id}`);
-  return response.data;
+export const getProduct = async (id: number): Promise<Product> => {
+  const response = await api.get<ProductResponse>(`/products/${id}`);
+  return response.data.data as Product;
 };
 
-export const searchProducts = async (query: string) => {
-  const response = await api.get<Product[]>('/products/search', {
+// export const getImage = async (fileName: string): Promise<File> => {
+//   const response = await api.get<File>(`/uploads/${fileName}`);
+//   console.log(response.data)
+//   return response.data as File;
+// };
+
+export const searchProducts = async (query: string): Promise<Product[]> => {
+  const response = await api.get<ProductResponse>('/products/search', {
     params: { query },
   });
-  return response.data;
+  return response.data.data as Product[];
 };
 
-export const createProduct = async (formData: FormData) => {
-  const response = await api.post<Product>('/products', formData, {
+export const createProduct = async (formData: FormData): Promise<Product> => {
+  const response = await api.post<ProductResponse>('/products', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   });
-  return response.data;
+  return response.data.data as Product;
 };
 
-export const updateProduct = async (id: number, formData: FormData) => {
-  const response = await api.put<Product>(`/products/${id}`, formData, {
+export const updateProduct = async (id: number, formData: FormData): Promise<Product> => {
+  const response = await api.patch<ProductResponse>(`/products/${id}`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   });
-  return response.data;
+  return response.data.data as Product;
 };
 
-export const deleteProduct = async (id: number) => {
-  await api.delete(`/products/${id}`);
+export const deleteProduct = async (id: number): Promise<boolean> => {
+  const response = await api.delete<ProductResponse>(`/products/${id}`);
+  return response.data.success;
 };

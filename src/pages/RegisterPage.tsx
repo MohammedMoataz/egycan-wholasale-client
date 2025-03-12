@@ -1,153 +1,98 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
-import { toast } from 'react-hot-toast';
-import { register as registerUser } from '../api/auth';
-import { useAuthStore } from '../store/authStore';
+import React, { useState } from "react";
+import { Layout, Typography, Steps, Row, Col, Card, message } from "antd";
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { UserOutlined, BankOutlined } from "@ant-design/icons";
+import { register as registerUser } from "../api/auth";
+import PersonalInfoForm from "./account/PersonalInfoForm";
+import BusinessInfoForm from "./account/BusinessInfoForm";
+import { PersonalInfo, BusinessInfo } from "../types";
 
-interface RegisterFormData {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
+const { Content } = Layout;
+const { Title, Text } = Typography;
 
 const RegisterPage: React.FC = () => {
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<RegisterFormData>();
+  const [current, setCurrent] = useState(0);
+  const [personalData, setPersonalData] = useState<PersonalInfo | null>(null);
   const navigate = useNavigate();
-  const { setAuth } = useAuthStore();
-  
-  const password = watch('password');
-  
+
   const registerMutation = useMutation({
-    mutationFn: (data: RegisterFormData) => registerUser(data.name, data.email, data.password),
-    onSuccess: (data) => {
-      setAuth(data.user, data.accessToken, data.refreshToken);
-      toast.success('Registration successful!');
-      navigate('/');
+    mutationFn: async (data: FormData) => {
+      const response = await registerUser(data);
+      return response;
+    },
+    onSuccess: () => {
+      message.success(
+        "Registration request submitted! Please wait for admin approval."
+      );
+      navigate("/login");
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || 'Registration failed. Please try again.');
+      message.error(
+        error.response?.data?.message ||
+          "Registration failed. Please try again."
+      );
     },
   });
-  
-  const onSubmit = (data: RegisterFormData) => {
-    registerMutation.mutate(data);
+
+  const handlePersonalSubmit = (data: PersonalInfo) => {
+    setPersonalData(data);
+    setCurrent(1);
   };
-  
+
+  const handleBusinessSubmit = async (data: BusinessInfo) => {
+    if (!personalData) return;
+
+    const formData = new FormData();
+
+    // Personal Info
+    formData.append("name", personalData.name);
+    formData.append("email", personalData.email);
+    formData.append("phone", personalData.phone);
+    formData.append("password", personalData.password);
+
+    // Business Info
+    formData.append("name", data.name);
+    formData.append("legalName", data.legalName);
+    formData.append("email", data.email);
+    formData.append("phone", data.phone);
+    formData.append("address", data.address);
+    formData.append("city", data.city);
+    formData.append("province", data.province);
+    formData.append("postalCode", data.postalCode);
+
+    registerMutation.mutate(formData);
+  };
+
   return (
-    <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-      <div className="p-6">
-        <h2 className="text-2xl font-bold text-center mb-6">Create an Account</h2>
-        
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="mb-4">
-            <label htmlFor="name" className="block text-gray-700 font-medium mb-2">
-              Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              {...register('name', { required: 'Name is required' })}
-              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                errors.name ? 'border-red-500' : 'border-gray-300'
-              }`}
-              placeholder="Your name"
-            />
-            {errors.name && (
-              <p className="mt-1 text-red-500 text-sm">{errors.name.message}</p>
+    <Content style={{ padding: "24px 0", minHeight: "100vh" }}>
+      <Row justify="center" align="middle">
+        <Col xs={24} sm={22} md={20} lg={16} xl={14}>
+          <div style={{ textAlign: "center", marginBottom: 24 }}>
+            <Title level={2}>Register</Title>
+            <Text>Register as a new user</Text>
+          </div>
+          <Steps current={current}>
+            <Steps.Step title="Personal Info" icon={<UserOutlined />} />
+            <Steps.Step title="Business Info" icon={<BankOutlined />} />
+          </Steps>
+          <div style={{ marginTop: 24, marginBottom: 24 }}>
+            {current === 0 && (
+              <PersonalInfoForm onNext={handlePersonalSubmit} />
+            )}
+            {current === 1 && (
+              <BusinessInfoForm
+                onFinish={handleBusinessSubmit}
+                onPrevious={() => setCurrent(0)}
+              />
             )}
           </div>
-          
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 font-medium mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              {...register('email', { 
-                required: 'Email is required',
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: 'Invalid email address',
-                }
-              })}
-              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                errors.email ? 'border-red-500' : 'border-gray-300'
-              }`}
-              placeholder="Your email"
-            />
-            {errors.email && (
-              <p className="mt-1 text-red-500 text-sm">{errors.email.message}</p>
-            )}
+          <div style={{ textAlign: "center" }}>
+            <Link to="/login">Already have an account? Login</Link>
           </div>
-          
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-gray-700 font-medium mb-2">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              {...register('password', { 
-                required: 'Password is required',
-                minLength: {
-                  value: 6,
-                  message: 'Password must be at least 6 characters',
-                }
-              })}
-              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                errors.password ? 'border-red-500' : 'border-gray-300'
-              }`}
-              placeholder="Your password"
-            />
-            {errors.password && (
-              <p className="mt-1 text-red-500 text-sm">{errors.password.message}</p>
-            )}
-          </div>
-          
-          <div className="mb-6">
-            <label htmlFor="confirmPassword" className="block text-gray-700 font-medium mb-2">
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              {...register('confirmPassword', { 
-                required: 'Please confirm your password',
-                validate: value => value === password || 'Passwords do not match',
-              })}
-              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
-              }`}
-              placeholder="Confirm your password"
-            />
-            {errors.confirmPassword && (
-              <p className="mt-1 text-red-500 text-sm">{errors.confirmPassword.message}</p>
-            )}
-          </div>
-          
-          <button
-            type="submit"
-            disabled={registerMutation.isPending}
-            className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-70"
-          >
-            {registerMutation.isPending ? 'Registering...' : 'Register'}
-          </button>
-        </form>
-        
-        <div className="mt-6 text-center">
-          <p className="text-gray-600">
-            Already have an account?{' '}
-            <Link to="/login" className="text-indigo-600 hover:text-indigo-800">
-              Login
-            </Link>
-          </p>
-        </div>
-      </div>
-    </div>
+        </Col>
+      </Row>
+    </Content>
   );
 };
 
