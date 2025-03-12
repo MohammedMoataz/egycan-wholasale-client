@@ -1,5 +1,5 @@
 import api from './axios';
-import { Invoice, InvoiceResponse, ResponseData } from '../types';
+import { Invoice, InvoiceResponse } from '../types';
 
 export const getInvoices = async (page: number, limit: number): Promise<Invoice[]> => {
   const response = await api.get<InvoiceResponse>(`/invoices?page=${page}&limit=${limit}`);

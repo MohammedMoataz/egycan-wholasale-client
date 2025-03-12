@@ -257,6 +257,10 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({
             <Select
               placeholder="Select category"
               onChange={handleCategoryChange}
+              showSearch
+              filterOption={(input, option) =>
+                option?.children.toLowerCase().includes(input.toLowerCase())
+              }
             >
               {categories?.map((category) => (
                 <Option key={category.id} value={category.id}>
@@ -275,6 +279,10 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({
             <Select
               placeholder="Select subcategory"
               disabled={!selectedCategoryId}
+              showSearch
+              filterOption={(input, option) =>
+                option?.children.toLowerCase().includes(input.toLowerCase())
+              }
             >
               {subcategories?.map((subcategory) => (
                 <Option key={subcategory.id} value={subcategory.id}>
@@ -284,13 +292,14 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({
             </Select>
           </Form.Item>
 
-          <Form.Item
-            name="brandId"
-            label="Brand"
-            rules={[{ required: true, message: "Please select a brand" }]}
-            style={{ width: "33%" }}
-          >
-            <Select placeholder="Select brand">
+          <Form.Item name="brandId" label="Brand" style={{ width: "33%" }}>
+            <Select
+              placeholder="Select brand"
+              showSearch
+              filterOption={(input, option) =>
+                option?.children.toLowerCase().includes(input.toLowerCase())
+              }
+            >
               {brands?.map((brand) => (
                 <Option key={brand.id} value={brand.id}>
                   {brand.name}
@@ -304,6 +313,9 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({
           name="images"
           label="Product Images"
           valuePropName="fileList"
+          rules={[
+            { required: true, message: "Please select at least one image" },
+          ]}
           getValueFromEvent={() => fileList}
         >
           <Upload
