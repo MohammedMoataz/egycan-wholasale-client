@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { UserOutlined, BankOutlined } from "@ant-design/icons";
 import { signUp } from "../../api/auth";
 import PersonalInfoForm from "./PersonalInfoForm";
-import BusinessInfoForm from "../account/BusinessInfoForm";
+import BusinessInfoForm from "./BusinessInfoForm";
 import { PersonalInfo, BusinessInfo } from "../../types";
 import { createBusiness } from "../../api/businesses";
 
@@ -27,7 +27,7 @@ const RegisterPage: React.FC = () => {
     onSuccess: () => {
       message.success("Let's submit your business data");
       setCurrent(1);
-    },@
+    },
     onError: () => {
       message.error("Registration failed. Please try again.");
     },
