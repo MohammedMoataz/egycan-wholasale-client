@@ -27,10 +27,10 @@ import AdminRoute from "./components/auth/AdminRoute";
 import "./styles/custom-styles.css";
 import SubcategoriesPage from "./pages/subcategories/SubcategoriesPage";
 import BrandPage from "./pages/brands/BrandPage";
-import LoginPage from "./pages/account/LoginPage";
-import RegisterPage from "./pages/account/RegisterPage";
+import LoginPage from "./pages/auth/LoginPage";
+import RegisterPage from "./pages/auth/RegisterPage";
 import AccountPage from "./pages/account/AccountPage";
-import CreateNewPasswordPage from "./pages/account/CreateNewPasswordPage";
+import CreateNewPasswordPage from "./pages/auth/CreateNewPasswordPage";
 import AdminAgentsPage from "./pages/admin/agents/AdminAgentsPage";
 
 const { Content } = Layout;
