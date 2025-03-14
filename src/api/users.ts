@@ -37,13 +37,21 @@ export const getUser = async (userId: number): Promise<User> => {
     return response.data.data as User;
 };
 
-export const createUser = async (data: FormData): Promise<User> => {
-    const response = await api.post<UserResponse>(`/users`, data);
+export const createUser = async (formData: FormData): Promise<User> => {
+    const response = await api.post<UserResponse>(`/users`, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
     return response.data.data as User;
 };
 
-export const editUser = async (userId: number, data: FormData): Promise<User> => {
-    const response = await api.patch<UserResponse>(`/users/${userId}`, data);
+export const updateUser = async (userId: number, formData: FormData): Promise<User> => {
+    const response = await api.patch<UserResponse>(`/users/${userId}`, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
     return response.data.data as User;
 };
 

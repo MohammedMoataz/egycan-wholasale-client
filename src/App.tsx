@@ -31,6 +31,7 @@ import LoginPage from "./pages/account/LoginPage";
 import RegisterPage from "./pages/account/RegisterPage";
 import AccountPage from "./pages/account/AccountPage";
 import CreateNewPasswordPage from "./pages/account/CreateNewPasswordPage";
+import AdminAgentsPage from "./pages/admin/agents/AdminAgentsPage";
 
 const { Content } = Layout;
 
@@ -72,7 +73,7 @@ function App() {
               <Route path="/admin" element={<AdminLayout />}>
                 <Route element={<AdminRoute />}>
                   <Route index element={<AdminDashboardPage />} />
-                  <Route path="agents" element={<></>} />
+                  <Route path="agents" element={<AdminAgentsPage />} />
                   <Route path="customers" element={<AdminBusinessesPage />} />
                   <Route path="products" element={<AdminProductsPage />} />
                   <Route path="categories" element={<AdminCategoriesPage />} />

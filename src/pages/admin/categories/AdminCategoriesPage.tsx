@@ -428,7 +428,7 @@ const AdminCategoriesPage: React.FC = () => {
         </Col>
         <Col flex="auto" style={{ margin: "0 24px" }}>
           <Input.Search
-            placeholder="Search categories and subcategories..."
+            placeholder="Search categories..."
             allowClear
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}

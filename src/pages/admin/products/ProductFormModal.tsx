@@ -9,7 +9,7 @@ import {
   Checkbox,
   message,
 } from "antd";
-import { UploadOutlined, PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createProduct, updateProduct } from "../../../api/products";
 import { getSubcategories } from "../../../api/categories";
@@ -130,7 +130,7 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({
     formData.append("inStock", values.inStock.toString());
     formData.append("categoryId", values.categoryId.toString());
     formData.append("subcategoryId", values.subcategoryId.toString());
-    formData.append("brandId", values.brandId.toString());
+    formData.append("brandId", values.brandId ?? undefined);
 
     // Handle file uploads
     if (fileList.length > 0) {

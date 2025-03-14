@@ -158,8 +158,7 @@ const SubcategoriesPage: React.FC = () => {
                 >
                   <Card
                     hoverable
-                    style={{ height: "100%" }}
-                    bodyStyle={{ padding: "12px 16px" }}
+                    style={{ height: "100%", padding: "12px 16px" }}
                   >
                     <Meta title={subcategory.name} />
                   </Card>
