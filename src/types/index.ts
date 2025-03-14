@@ -45,29 +45,49 @@ export interface BusinessInfo {
 }
 
 // User Types
-export interface UserProfile {
+export interface User {
   id: string;
   name: string;
+  phone: string;
   email: string;
-  role: string;
+  imageUrl: string | null;
+  role: 'customer' | 'admin' | string;
 }
 
-export interface User {
-  id?: number;
+export interface UpdateProfileData {
   name: string;
-  email: string;
-  role: 'customer' | 'manager' | 'admin';
-  status: 'pending' | 'active' | 'rejected';
   phone: string;
-  businessName?: string;
-  businessEmail?: string;
-  businessPhone?: string;
-  registrationNumber?: string;
-  taxId?: string;
-  businessAddress?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  imageUrl?: string | null;
 }
+
+export interface UpdatePasswordData {
+  currentPassword: string;
+  newPassword: string;
+}
+
+// export interface UserProfile {
+//   id: string;
+//   name: string;
+//   email: string;
+//   role: string;
+// }
+
+// export interface User {
+//   id?: number;
+//   name: string;
+//   email: string;
+//   role: 'customer' | 'manager' | 'admin';
+//   status: 'pending' | 'active' | 'rejected';
+//   phone: string;
+//   businessName?: string;
+//   businessEmail?: string;
+//   businessPhone?: string;
+//   registrationNumber?: string;
+//   taxId?: string;
+//   businessAddress?: string;
+//   createdAt?: string;
+//   updatedAt?: string;
+// }
 
 export interface Business {
   id: number;

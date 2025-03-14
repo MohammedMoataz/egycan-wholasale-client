@@ -87,3 +87,46 @@
 .ant-dropdown-menu-item .anticon {
     margin-right: 8px;
 }
+
+
+.ant-carousel .slick-dots li button {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.ant-carousel .slick-dots li.slick-active button {
+    background: white;
+}
+
+.ant-carousel {
+    margin-bottom: 48px;
+}
+
+/* Card hover animations */
+.ant-card.ant-card-hoverable:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* Customize card meta title */
+.ant-card-meta-title {
+    font-size: 1.125rem;
+    margin-bottom: 0.25rem !important;
+}
+
+/* Page container */
+.homepage-container {
+    padding-bottom: 48px;
+}
+
+/* Card responsive images */
+.ant-card-cover img {
+    transition: transform 0.5s ease;
+}
+
+.ant-card-cover:hover img {
+    transform: scale(1.05);
+}

@@ -9,14 +9,9 @@ import MainLayout from "./layouts/MainLayout";
 import AdminLayout from "./layouts/AdminLayout";
 
 // Pages
-import HomePage from "./pages/HomePage";
+import HomePage from "./pages/home/HomePage";
 import ProductsPage from "./pages/products/ProductsPage";
-import SubcategoriesPage from "./pages/SubcategoriesPage";
-import BrandPage from "./pages/BrandPage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import CartPage from "./pages/CartPage";
-import AccountPage from "./pages/AccountPage";
+import CartPage from "./pages/cart/CartPage";
 import AdminLoginPage from "./pages/admin/login/AdminLoginPage";
 import AdminDashboardPage from "./pages/admin/dashboard/AdminDashboardPage";
 import AdminBusinessesPage from "./pages/admin/businesses/AdminBusinessesPage";
@@ -30,6 +25,11 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 import AdminRoute from "./components/auth/AdminRoute";
 
 import "./styles/custom-styles.css";
+import SubcategoriesPage from "./pages/subcategories/SubcategoriesPage";
+import BrandPage from "./pages/brands/BrandPage";
+import LoginPage from "./pages/account/LoginPage";
+import RegisterPage from "./pages/account/RegisterPage";
+import AccountPage from "./pages/account/AccountPage";
 
 const { Content } = Layout;
 

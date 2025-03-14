@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Layout, Typography, Steps, Row, Col, Card, message } from "antd";
+import { Layout, Typography, Steps, Row, Col, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { UserOutlined, BankOutlined } from "@ant-design/icons";
-import { register as registerUser } from "../api/auth";
-import PersonalInfoForm from "./account/PersonalInfoForm";
-import BusinessInfoForm from "./account/BusinessInfoForm";
-import { PersonalInfo, BusinessInfo } from "../types";
+import { register as registerUser } from "../../api/auth";
+import PersonalInfoForm from "./PersonalInfoForm";
+import BusinessInfoForm from "./BusinessInfoForm";
+import { PersonalInfo, BusinessInfo } from "../../types";
 
 const { Content } = Layout;
 const { Title, Text } = Typography;

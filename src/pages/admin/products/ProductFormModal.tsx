@@ -259,7 +259,7 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({
               onChange={handleCategoryChange}
               showSearch
               filterOption={(input, option) =>
-                option?.children.toLowerCase().includes(input.toLowerCase())
+                option.children.toLowerCase().includes(input.toLowerCase())
               }
             >
               {categories?.map((category) => (
@@ -281,7 +281,7 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({
               disabled={!selectedCategoryId}
               showSearch
               filterOption={(input, option) =>
-                option?.children.toLowerCase().includes(input.toLowerCase())
+                option.children.toLowerCase().includes(input.toLowerCase())
               }
             >
               {subcategories?.map((subcategory) => (
@@ -297,7 +297,7 @@ const ProductFormModal: React.FC<ProductFormModalProps> = ({
               placeholder="Select brand"
               showSearch
               filterOption={(input, option) =>
-                option?.children.toLowerCase().includes(input.toLowerCase())
+                option.children.toLowerCase().includes(input.toLowerCase())
               }
             >
               {brands?.map((brand) => (

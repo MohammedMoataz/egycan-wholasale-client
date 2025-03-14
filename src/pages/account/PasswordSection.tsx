@@ -4,6 +4,7 @@ import { KeyOutlined } from "@ant-design/icons";
 import { useMutation } from "@tanstack/react-query";
 import { updatePassword } from "../../api/users";
 import { message } from "antd";
+import { UpdatePasswordData } from "../../types";
 
 const { Title, Text } = Typography;
 
@@ -13,7 +14,15 @@ interface PasswordData {
   confirmPassword: string;
 }
 
-const PasswordSection: React.FC = () => {
+interface PasswordSectionProps {
+  onUpdatePassword: (data: UpdatePasswordData) => void;
+  isUpdating: boolean;
+}
+
+const PasswordSection: React.FC<PasswordSectionProps> = ({
+  onUpdatePassword,
+  isUpdating,
+}) => {
   const [isPasswordMode, setIsPasswordMode] = useState(false);
   const [form] = Form.useForm();
 

@@ -22,7 +22,7 @@ export const useAuthStore = create<AuthState>()(
       refreshToken: null,
       isAuthenticated: false,
       isAdmin: false,
-      
+
       setAuth: (user, accessToken, refreshToken) => {
         set({
           user,
@@ -32,7 +32,7 @@ export const useAuthStore = create<AuthState>()(
           isAdmin: user.role === 'admin',
         });
       },
-      
+
       logout: () => {
         set({
           user: null,
@@ -42,16 +42,17 @@ export const useAuthStore = create<AuthState>()(
           isAdmin: false,
         });
       },
-      
+
       isTokenExpired: () => {
         const { accessToken } = get();
         if (!accessToken) return true;
-        
+
         try {
           const decoded = jwtDecode(accessToken);
           const currentTime = Date.now() / 1000;
           return decoded.exp ? decoded.exp < currentTime : true;
         } catch (error) {
+          console.log(error);
           return true;
         }
       },

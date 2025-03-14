@@ -18,7 +18,15 @@ import { message } from "antd";
 
 const { Title, Text } = Typography;
 
-const DeleteAccountSection: React.FC = () => {
+interface DeleteAccountSectionProps {
+  onDeleteAccount: (password: string) => void;
+  isDeleting: boolean;
+}
+
+const DeleteAccountSection: React.FC<DeleteAccountSectionProps> = ({
+  onDeleteAccount,
+  isDeleting,
+}) => {
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [form] = Form.useForm();
   const navigate = useNavigate();
