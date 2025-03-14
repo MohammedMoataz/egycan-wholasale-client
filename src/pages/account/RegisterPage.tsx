@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Layout, Typography, Steps, Row, Col, message } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { UserOutlined, BankOutlined } from "@ant-design/icons";
-import { register as registerUser } from "../../api/auth";
+import { signUp } from "../../api/auth";
 import PersonalInfoForm from "./PersonalInfoForm";
 import BusinessInfoForm from "./BusinessInfoForm";
 import { PersonalInfo, BusinessInfo } from "../../types";
+import { createBusiness } from "../../api/businesses";
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -14,30 +15,44 @@ const { Title, Text } = Typography;
 const RegisterPage: React.FC = () => {
   const [current, setCurrent] = useState(0);
   const [personalData, setPersonalData] = useState<PersonalInfo | null>(null);
-  const navigate = useNavigate();
+  const [ownerId, setOwnerId] = useState<number | null>(null);
 
-  const registerMutation = useMutation({
+  const userInfoSubmitMutation = useMutation({
+    mutationFn: async (data: PersonalInfo) => {
+      const response = await signUp(data);
+      console.log("PersonalResponse", response);
+      setOwnerId(response.data.userDetails.id);
+      return response;
+    },
+    onSuccess: () => {
+      message.success("Let's submit your business data");
+      setCurrent(1);
+    },
+    onError: () => {
+      message.error("Registration failed. Please try again.");
+    },
+  });
+
+  const businessInfoSubmitMutation = useMutation({
     mutationFn: async (data: FormData) => {
-      const response = await registerUser(data);
+      console.log(data);
+      const response = await createBusiness(data);
+      console.log("businessResponse: ", response);
       return response;
     },
     onSuccess: () => {
       message.success(
         "Registration request submitted! Please wait for admin approval."
       );
-      navigate("/login");
     },
-    onError: (error: any) => {
-      message.error(
-        error.response?.data?.message ||
-          "Registration failed. Please try again."
-      );
+    onError: () => {
+      message.error("Registration failed. Please try again.");
     },
   });
 
   const handlePersonalSubmit = (data: PersonalInfo) => {
     setPersonalData(data);
-    setCurrent(1);
+    userInfoSubmitMutation.mutate(data);
   };
 
   const handleBusinessSubmit = async (data: BusinessInfo) => {
@@ -46,6 +61,7 @@ const RegisterPage: React.FC = () => {
     const formData = new FormData();
 
     // Personal Info
+    formData.append("ownerId", ownerId!.toString());
     formData.append("name", personalData.name);
     formData.append("email", personalData.email);
     formData.append("phone", personalData.phone);
@@ -61,7 +77,7 @@ const RegisterPage: React.FC = () => {
     formData.append("province", data.province);
     formData.append("postalCode", data.postalCode);
 
-    registerMutation.mutate(formData);
+    businessInfoSubmitMutation.mutate(formData);
   };
 
   return (

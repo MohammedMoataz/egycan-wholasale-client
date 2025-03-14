@@ -16,7 +16,7 @@ export const getBusiness = async (id: number): Promise<Business> => {
   return response.data.data as Business;
 };
 
-export const createBusgetBusiness = async (data: FormData): Promise<Business> => {
+export const createBusiness = async (data: FormData): Promise<Business> => {
   const response = await api.post<BusinessResponse>('/businesses', data);
   return response.data.data as Business;;
 };

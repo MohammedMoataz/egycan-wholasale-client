@@ -30,6 +30,7 @@ import BrandPage from "./pages/brands/BrandPage";
 import LoginPage from "./pages/account/LoginPage";
 import RegisterPage from "./pages/account/RegisterPage";
 import AccountPage from "./pages/account/AccountPage";
+import CreateNewPasswordPage from "./pages/account/CreateNewPasswordPage";
 
 const { Content } = Layout;
 
@@ -54,6 +55,10 @@ function App() {
                 <Route path="brand/:brandId" element={<BrandPage />} />
                 <Route path="login" element={<LoginPage />} />
                 <Route path="register" element={<RegisterPage />} />
+                <Route
+                  path="verify-email/:code"
+                  element={<CreateNewPasswordPage />}
+                />
 
                 {/* Protected Customer Routes */}
                 <Route element={<ProtectedRoute />}>

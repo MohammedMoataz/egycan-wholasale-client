@@ -15,6 +15,14 @@ export interface LoginFormData {
   password: string;
 }
 
+
+export interface SignUpResponse {
+  success: boolean;
+  data: {
+    userDetails: User
+  }
+}
+
 export interface AuthResponse {
   success: boolean;
   data: {
@@ -26,6 +34,7 @@ export interface AuthResponse {
 
 // Registration Types
 export interface PersonalInfo {
+  id: number;
   name: string;
   email: string;
   phone: string;
@@ -46,7 +55,7 @@ export interface BusinessInfo {
 
 // User Types
 export interface User {
-  id: string;
+  id: number;
   name: string;
   phone: string;
   email: string;

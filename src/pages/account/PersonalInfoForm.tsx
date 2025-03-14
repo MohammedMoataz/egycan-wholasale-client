@@ -36,7 +36,7 @@ const PersonalInfoForm: React.FC<PersonalInfoFormProps> = ({
       scrollToFirstError
     >
       <Form.Item
-        name="fullName"
+        name="name"
         label="Full Name"
         rules={[
           { required: true, message: "Please input your full name!" },

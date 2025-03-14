@@ -1,9 +1,15 @@
 import api from './axios';
-import { AuthResponse } from '../types';
+import { AuthResponse, PersonalInfo, SignUpResponse, User, UserResponse } from '../types';
 
-export const register = async (data: FormData) => {
-  const response = await api.post<AuthResponse>('/auth/register', data);
+export const signUp = async (data: PersonalInfo): Promise<SignUpResponse> => {
+  const response = await api.post<SignUpResponse>('/auth/signUp', data);
   return response.data;
+};
+
+export const updateUser = async (data: FormData): Promise<User> => {
+  const response = await api.patch<UserResponse>(`/auth/new-password`, data);
+  console.log(response.data.data);
+  return response.data.data as User;
 };
 
 export const login = async (email: string, password: string) => {
