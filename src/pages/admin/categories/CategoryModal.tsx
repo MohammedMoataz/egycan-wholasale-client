@@ -73,7 +73,7 @@ const CategoryModal: React.FC<CategoryModalProps> = ({
       }
 
       if (category) {
-        updateCategoryMutation.mutate({ id: category.id, formData });
+        updateCategoryMutation.mutate({ id: category.id!, formData });
       } else {
         createCategoryMutation.mutate(formData);
       }

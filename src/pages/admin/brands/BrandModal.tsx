@@ -1,20 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-  Modal,
-  Form,
-  Input,
-  Button,
-  Upload,
-  Space,
-  Typography,
-  message,
-} from "antd";
+import { Modal, Form, Input, Button, Upload, Space, Typography } from "antd";
 import {
   UploadOutlined,
   PlusOutlined,
   SaveOutlined,
   CloseOutlined,
-  StarFilled,
+  ShopOutlined,
   EditOutlined,
 } from "@ant-design/icons";
 import type { UploadFile, UploadProps } from "antd/es/upload/interface";
@@ -51,6 +42,7 @@ const BrandModal: React.FC<BrandModalProps> = ({
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
+  // Set initial form values and file list when modal opens or currentBrand changes
   useEffect(() => {
     if (isModalOpen) {
       form.setFieldsValue({
@@ -72,7 +64,7 @@ const BrandModal: React.FC<BrandModalProps> = ({
         setFileList([]);
       }
     }
-  }, [isModalOpen, formData, form, imagePreview]);
+  }, [isModalOpen, currentBrand, form]);
 
   const handleCancel = () => {
     form.resetFields();
@@ -81,31 +73,50 @@ const BrandModal: React.FC<BrandModalProps> = ({
 
   const onFinish = (values: any) => {
     const newFormData = new FormData();
+
+    // Preserve existing values first
     formData.forEach((value, key) => {
-      newFormData.append(key, value);
+      if (key !== "name" && key !== "description") {
+        newFormData.append(key, value);
+      }
     });
+
+    // Set new values from form
     newFormData.set("name", values.name);
     newFormData.set("description", values.description || "");
 
-    if (fileList.length > 0 && fileList[0].originFileObj) {
-      newFormData.set("image", fileList[0].originFileObj);
+    // Keep the existing image if there's no new one
+    if (fileList.length > 0) {
+      if (fileList[0].originFileObj) {
+        newFormData.set("image", fileList[0].originFileObj);
+      } else if (formData.get("image")) {
+        newFormData.set("image", formData.get("image") as Blob);
+      }
     }
 
     setFormData(newFormData);
+
+    // Call handleSubmit directly instead of creating a synthetic event
     handleSubmit(new Event("submit") as any);
   };
 
-  const handleFileChange: UploadProps["onChange"] = ({ fileList }) => {
-    setFileList(fileList);
+  const handleFileChange: UploadProps["onChange"] = ({
+    fileList: newFileList,
+  }) => {
+    setFileList(newFileList);
 
-    if (fileList.length > 0 && fileList[0].originFileObj) {
-      const file = fileList[0].originFileObj;
+    if (newFileList.length > 0 && newFileList[0].originFileObj) {
+      const file = newFileList[0].originFileObj;
+
+      // Create a new FormData but preserve existing form values
       const newFormData = new FormData();
       formData.forEach((value, key) => {
-        newFormData.append(key, value);
+        if (key !== "image") {
+          newFormData.append(key, value);
+        }
       });
-      newFormData.set("image", file);
 
+      newFormData.set("image", file);
       setFormData(newFormData);
 
       const reader = new FileReader();
@@ -115,37 +126,38 @@ const BrandModal: React.FC<BrandModalProps> = ({
         }
       };
       reader.readAsDataURL(file);
-    } else {
+    } else if (newFileList.length === 0) {
       setImagePreview("");
+
+      // Remove image but preserve other form data
+      const newFormData = new FormData();
+      formData.forEach((value, key) => {
+        if (key !== "image") {
+          newFormData.append(key, value);
+        }
+      });
+
+      setFormData(newFormData);
     }
   };
 
   const handleRemoveImage = () => {
     setImagePreview("");
     setFileList([]);
+
     const newFormData = new FormData();
     formData.forEach((value, key) => {
-      newFormData.append(key, value);
+      if (key !== "image") {
+        newFormData.append(key, value);
+      }
     });
-    newFormData.delete("image");
 
     setFormData(newFormData);
   };
 
-  const uploadFileList: UploadFile[] = imagePreview
-    ? [
-        {
-          uid: "-1",
-          name: "brand-image",
-          status: "done",
-          url: imagePreview,
-          thumbUrl: imagePreview,
-        },
-      ]
-    : [];
-
   const isLoading =
     createBrandMutation.isPending || updateBrandMutation.isPending;
+
   const modalTitle = currentBrand ? (
     <Space>
       <EditOutlined />
@@ -153,7 +165,7 @@ const BrandModal: React.FC<BrandModalProps> = ({
     </Space>
   ) : (
     <Space>
-      <StarFilled />
+      <ShopOutlined />
       Add New Brand
     </Space>
   );
@@ -169,7 +181,15 @@ const BrandModal: React.FC<BrandModalProps> = ({
       centered
       closeIcon={<CloseOutlined />}
     >
-      <Form form={form} layout="vertical" onFinish={onFinish}>
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={onFinish}
+        initialValues={{
+          name: formData.get("name") || "",
+          description: formData.get("description") || "",
+        }}
+      >
         <Form.Item
           name="name"
           label="Brand Name"
@@ -209,6 +229,7 @@ const BrandModal: React.FC<BrandModalProps> = ({
               htmlType="submit"
               icon={currentBrand ? <SaveOutlined /> : <PlusOutlined />}
               loading={isLoading}
+              disabled={isLoading}
             >
               {currentBrand ? "Update Brand" : "Create Brand"}
             </Button>

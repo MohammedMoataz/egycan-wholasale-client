@@ -8,7 +8,6 @@ export const signUp = async (data: PersonalInfo): Promise<SignUpResponse> => {
 
 export const updateUser = async (data: FormData): Promise<User> => {
   const response = await api.patch<UserResponse>(`/auth/new-password`, data);
-  console.log(response.data.data);
   return response.data.data as User;
 };
 

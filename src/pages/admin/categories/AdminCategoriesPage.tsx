@@ -165,6 +165,7 @@ const CategoriesGrid: React.FC<{
         <Col xs={24} sm={12} md={8} lg={6} key={category.id}>
           <Card
             hoverable
+            style={{ overflow: "hidden" }}
             cover={
               category.imageUrl ? (
                 <img

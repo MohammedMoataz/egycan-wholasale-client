@@ -49,7 +49,7 @@ export const createUser = async (formData: FormData): Promise<User> => {
 export const updateUser = async (userId: number, formData: FormData): Promise<User> => {
     const response = await api.patch<UserResponse>(`/users/${userId}`, formData, {
         headers: {
-            "Content-Type": "multipart/form-data",
+            'Content-Type': 'multipart/form-data',
         },
     });
     return response.data.data as User;
