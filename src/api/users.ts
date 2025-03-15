@@ -27,8 +27,13 @@ export const deleteAccount = async (password: string): Promise<boolean> => {
 };
 
 // Admin endpoints
-export const getAllUsers = async (page: number, limit: number): Promise<ResponseData<User>> => {
+export const getAllUsers = async (page?: number, limit?: number): Promise<ResponseData<User>> => {
     const response = await api.get<UserResponse>(`/users?page=${page}&limit=${limit}`);
+    return response.data.data as ResponseData<User>;
+};
+
+export const getTotalCustomers = async (): Promise<ResponseData<User>> => {
+    const response = await api.get<UserResponse>(`/users?role=customer`);
     return response.data.data as ResponseData<User>;
 };
 

@@ -262,7 +262,7 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({
               setFormData(newFormData);
             }}
           >
-            <Option value="customer">Customer</Option>
+            <Option value="admin">Admin</Option>
             <Option value="manager">Manager</Option>
           </Select>
         </Form.Item>

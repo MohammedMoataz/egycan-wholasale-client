@@ -16,6 +16,7 @@ import { getBrands } from "../../../api/brands";
 import { getInvoices } from "../../../api/invoices";
 import RecentInvoices from "./RecentInvoices";
 import StatCard from "./StatCard";
+import { getAllUsers, getTotalCustomers } from "../../../api/users";
 
 const { Title } = Typography;
 
@@ -44,10 +45,16 @@ const AdminDashboardPage: React.FC = () => {
     queryFn: () => getInvoices(1, 10),
   });
 
+  const { data: usersResponse } = useQuery({
+    queryKey: ["users"],
+    queryFn: () => getTotalCustomers(),
+  });
+
   const products = productsResponse?.data;
   const categories = categoriesResponse?.data;
   const brands = brandsResponse?.data;
-  const invoices = invoicesResponse?.data;
+  const invoices = invoicesResponse;
+  const customers = usersResponse?.data;
 
   // Calculate total sales
   const totalSales =
@@ -102,7 +109,7 @@ const AdminDashboardPage: React.FC = () => {
     },
     {
       title: "Customers",
-      value: uniqueCustomers,
+      value: customers?.length || 0,
       icon: <UserOutlined />,
       color: "#722ed1",
     },
