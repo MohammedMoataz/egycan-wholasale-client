@@ -10,6 +10,11 @@ export interface Meta {
   pageSize: number;
 }
 
+export interface ListName {
+  id: number;
+  name: string;
+}
+
 export interface LoginFormData {
   email: string;
   password: string;
@@ -70,8 +75,9 @@ export interface UpdateProfileData {
 }
 
 export interface UpdatePasswordData {
-  currentPassword: string;
+  oldPassword: string;
   newPassword: string;
+  confirmPassword: string;
 }
 
 // export interface UserProfile {

@@ -12,7 +12,7 @@ export const updateUserProfile = async (data: FormData): Promise<User> => {
 };
 
 export const updatePassword = async (data: {
-    currentPassword: string;
+    oldPassword: string;
     newPassword: string;
 }): Promise<User> => {
     const response = await api.patch<UserResponse>(`/users/me/password`, data);
@@ -33,7 +33,7 @@ export const getAllUsers = async (page?: number, limit?: number): Promise<Respon
 };
 
 export const getTotalCustomers = async (): Promise<ResponseData<User>> => {
-    const response = await api.get<UserResponse>(`/users?role=customer`);
+    const response = await api.get<UserResponse>(`/businesses`);
     return response.data.data as ResponseData<User>;
 };
 

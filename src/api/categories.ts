@@ -2,6 +2,7 @@ import api from './axios';
 import {
   Category,
   CategoryResponse,
+  ListName,
   ResponseData,
   Subcategory,
   SubcategoryResponse
@@ -10,6 +11,11 @@ import {
 export const getCategories = async (page: number, limit: number): Promise<ResponseData<Category>> => {
   const response = await api.get<CategoryResponse>(`/categories?page=${page}&limit=${limit}`);
   return response.data.data as ResponseData<Category>;
+};
+
+export const listCategories = async (): Promise<ListName[]> => {
+  const response = await api.get<ListName[]>(`/categories/name`);
+  return response.data.data as ListName[];
 };
 
 export const getCategory = async (id: number): Promise<Category> => {
@@ -43,6 +49,11 @@ export const deleteCategory = async (id: number): Promise<boolean> => {
 export const getAllSubcategories = async (): Promise<ResponseData<Subcategory>> => {
   const response = await api.get<SubcategoryResponse>(`/subcategories`);
   return response.data.data as ResponseData<Subcategory>;
+};
+
+export const listSubcategories = async (): Promise<ListName[]> => {
+  const response = await api.get<ListName[]>(`/subcategories/name`);
+  return response.data.data as ListName[];
 };
 
 export const getSubcategories = async (categoryId: number): Promise<ResponseData<Subcategory>> => {

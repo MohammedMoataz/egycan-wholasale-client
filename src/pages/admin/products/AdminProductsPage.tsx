@@ -4,8 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Layout, Typography, Space, Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { getProducts } from "../../../api/products";
-import { getCategories } from "../../../api/categories";
-import { getBrands } from "../../../api/brands";
+import { getCategories, listCategories } from "../../../api/categories";
+import { getBrands, listBrands } from "../../../api/brands";
 import ProductsTable from "./ProductsTable";
 import ProductFormModal from "./ProductFormModal";
 import DeleteConfirmationModal from "./DeleteConfirmationModal";
@@ -22,7 +22,7 @@ const AdminProductsPage: React.FC = () => {
   const [currentProduct, setCurrentProduct] = React.useState<Product | null>(
     null
   );
-  
+
   // Fetch products
   const { data: productsResponse, isLoading } = useQuery({
     queryKey: ["products"],
@@ -32,18 +32,18 @@ const AdminProductsPage: React.FC = () => {
   // Fetch categories
   const { data: categoriesResponse } = useQuery({
     queryKey: ["categories"],
-    queryFn: () => getCategories(1, 10),
+    queryFn: () => listCategories(),
   });
 
   // Fetch brands
   const { data: brandsResponse } = useQuery({
     queryKey: ["brands"],
-    queryFn: () => getBrands(1, 10),
+    queryFn: () => listBrands(),
   });
 
   const products = productsResponse?.data || [];
-  const categories = categoriesResponse?.data || [];
-  const brands = brandsResponse?.data || [];
+  const categories = categoriesResponse || [];
+  const brands = brandsResponse || [];
 
   const filteredProducts = products.filter(
     (product) =>

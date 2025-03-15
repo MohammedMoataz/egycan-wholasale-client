@@ -4,7 +4,7 @@ import { LockOutlined } from "@ant-design/icons";
 
 interface PasswordFormProps {
   onSubmit: (values: {
-    currentPassword: string;
+    oldPassword: string;
     newPassword: string;
     confirmPassword: string;
   }) => void;
@@ -22,7 +22,7 @@ const PasswordForm: React.FC<PasswordFormProps> = ({
   return (
     <Form form={form} layout="vertical" onFinish={onSubmit}>
       <Form.Item
-        name="currentPassword"
+        name="oldPassword"
         label="Current Password"
         rules={[
           { required: true, message: "Please enter your current password" },

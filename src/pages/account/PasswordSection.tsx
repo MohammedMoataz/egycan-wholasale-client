@@ -9,7 +9,7 @@ import { UpdatePasswordData } from "../../types";
 const { Title, Text } = Typography;
 
 interface PasswordData {
-  currentPassword: string;
+  oldPassword: string;
   newPassword: string;
   confirmPassword: string;
 }
@@ -27,8 +27,7 @@ const PasswordSection: React.FC<PasswordSectionProps> = ({
   const [form] = Form.useForm();
 
   const updatePasswordMutation = useMutation({
-    mutationFn: (data: { currentPassword: string; newPassword: string }) =>
-      updatePassword(data),
+    mutationFn: (data: UpdatePasswordData) => updatePassword(data),
     onSuccess: () => {
       message.success("Password updated successfully");
       form.resetFields();
@@ -43,8 +42,9 @@ const PasswordSection: React.FC<PasswordSectionProps> = ({
 
   const handleSubmit = (values: PasswordData) => {
     updatePasswordMutation.mutate({
-      currentPassword: values.currentPassword,
+      oldPassword: values.oldPassword,
       newPassword: values.newPassword,
+      confirmPassword: values.confirmPassword,
     });
   };
 
@@ -70,7 +70,7 @@ const PasswordSection: React.FC<PasswordSectionProps> = ({
       {isPasswordMode ? (
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <Form.Item
-            name="currentPassword"
+            name="oldPassword"
             label="Current Password"
             rules={[
               {
